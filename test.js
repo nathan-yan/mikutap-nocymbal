@@ -1,7 +1,8 @@
 'use strict';
 
+var mm;
 $(function() {
-  (new MainManager).init();
+  mm = (new MainManager).init();
 });
 /**
  * @return {undefined}
