@@ -1,3091 +1,1727 @@
-'use strict';
 
-var mm;
-$(function() {
-  mm = (new MainManager).init();
-});
-/**
- * @return {undefined}
- */
 var MainManager = function() {
-  /**
-   * @return {undefined}
-   */
-  function resizeInput() {
-    width = aidn.window.width();
-    height = aidn.window.height();
-    if (canvas) {
-      canvas.resize(width, height);
-      if (me) {
-        me.resize();
-      }
+    aidn.util.useDummyDiv();
+    function a() {
+        G = aidn.window.width(),
+        A = aidn.window.height(),
+        I && (I.resize(G, A),
+        g && g.resize())
     }
-  }
-  /**
-   * @param {number} i
-   * @param {number} a
-   * @return {undefined}
-   */
-  function e(i, a) {
-    a = list.length + x.length;
-    if (1 == s2) {
-      i = i + x.length;
+    function e(n, a) {
+        a = R.length + C.length,
+        1 == b && (n += C.length);
+        var e = Math.round(n / a * 100) + "%";
+        a <= 0 && (e = "0%"),
+        $("#scene_loading hr").css("width", e)
     }
-    /** @type {string} */
-    var meterPos = Math.round(i / a * 100) + "%";
-    if (a <= 0) {
-      /** @type {string} */
-      meterPos = "0%";
+    function t() {
+        1 == ++b ? R.init(t, e) : 2 == b && i()
     }
-    $("#scene_loading hr").css("width", meterPos);
-  }
-  /**
-   * @return {undefined}
-   */
-  function app() {
-    if (1 == ++s2) {
-      list.init(app, e);
-    } else {
-      if (2 == s2) {
-        f();
-      }
+    function i() {
+        x = 1,
+        $("#scene_loading hr").css("display", "none"),
+        $("#scene_loading hr").css("width", 0),
+        $("#scene_loading").stop().fadeOut(200, "linear"),
+        p ? ($("#scene_loading").stop().css("display", "none"),
+        $("#bt_back").stop().css("display", "none"),
+        B && $("#bt_fs").stop().css("display", "none"),
+        $("#scene_main .set").stop().css("display", "none")) : $("#scene_main").stop().fadeIn(200, "linear"),
+        m = aidn.___waContext.currentTime,
+        g.start(),
+        C.start()
     }
-  }
-  /**
-   * @return {undefined}
-   */
-  function f() {
-    /** @type {number} */
-    b = 1;
-    $("#scene_loading hr").css("display", "none");
-    $("#scene_loading hr").css("width", 0);
-    $("#scene_loading").stop().fadeOut(200, "linear");
-    if (p) {
-      $("#scene_loading").stop().css("display", "none");
-      $("#bt_back").stop().css("display", "none");
-      if (B) {
-        $("#bt_fs").stop().css("display", "none");
-      }
-      $("#scene_main .set").stop().css("display", "none");
-    } else {
-      $("#scene_main").stop().fadeIn(200, "linear");
+    function n(n) {
+        (U = !U) ? ($("#bt_feedback a").text("FEEDBACK: ON"),
+        aidn.util.setCookie("fb", "on", 2592e3)) : ($("#bt_feedback a").text("FEEDBACK: OFF"),
+        aidn.util.setCookie("fb", "off", 2592e3)),
+        n && n.preventDefault()
     }
-    noteOnAt = aidn.___waContext.currentTime;
-    me.start();
-    x.start();
-  }
-  /**
-   * @param {!Event} event
-   * @return {undefined}
-   */
-  function create(event) {
-    if (U = !U) {
-      $("#bt_feedback a").text("FEEDBACK: ON");
-      aidn.util.setCookie("fb", "on", 2592e3);
-    } else {
-      $("#bt_feedback a").text("FEEDBACK: OFF");
-      aidn.util.setCookie("fb", "off", 2592e3);
+    function o(n) {
+        (T = !T) ? ($("#bt_backtrack a").text("BACKTRACK: ON"),
+        aidn.util.setCookie("bt", "on", 2592e3)) : ($("#bt_backtrack a").text("BACKTRACK: OFF"),
+        aidn.util.setCookie("bt", "off", 2592e3)),
+        n && n.preventDefault()
     }
-    if (event) {
-      event.preventDefault();
-    }
-  }
-  /**
-   * @param {!Event} event
-   * @return {undefined}
-   */
-  function register(event) {
-    if (T = !T) {
-      $("#bt_backtrack a").text("BACKTRACK: ON");
-      aidn.util.setCookie("bt", "on", 2592e3);
-    } else {
-      $("#bt_backtrack a").text("BACKTRACK: OFF");
-      aidn.util.setCookie("bt", "off", 2592e3);
-    }
-    if (event) {
-      event.preventDefault();
-    }
-  }
-  /**
-   * @return {undefined}
-   */
-  function update() {
-    x.update();
-    if (1 == b && --D < 0) {
-      buildCursor();
-    }
-    (function() {
-      if (!p) {
-        return;
-      }
-      if (1 != b) {
-        return;
-      }
-      /** @type {number} */
-      var delta = 1e3 * (aidn.___waContext.currentTime - noteOnAt);
-      if (y * factor < delta) {
-        /** @type {number} */
-        var zero = Math.floor(delta / factor) + 1;
-        tmax = tmax + (zero - y);
-        /** @type {number} */
-        var visWidth = (y = zero) * factor - delta;
-        if (0 <= visWidth) {
-          /** @type {number} */
-          var big = Math.random();
-          /** @type {number} */
-          var i = 1;
-          if (192 <= tmax) {
-            /** @type {number} */
-            tmax = 0;
-          } else {
-            if (128 <= tmax) {
-              if (big < .7) {
-                /** @type {number} */
-                i = 2;
-              }
-              if (big < .5) {
-                /** @type {number} */
-                i = 3;
-              }
-            } else {
-              if (64 <= tmax) {
-                if (big < .35) {
-                  /** @type {number} */
-                  i = 2;
-                }
-                if (big < .2) {
-                  /** @type {number} */
-                  i = 3;
-                }
-                if (big < .02) {
-                  /** @type {number} */
-                  i = 0;
-                }
-              } else {
-                if (32 <= tmax) {
-                  if (big < .35) {
-                    /** @type {number} */
-                    i = 2;
-                  }
-                  if (big < .24) {
-                    /** @type {number} */
-                    i = 0;
-                  }
-                } else {
-                  if (0 <= tmax && big < .4) {
-                    /** @type {number} */
-                    i = 0;
-                  }
-                }
-              }
-            }
-          }
-          /** @type {number} */
-          var nextCreation = 0;
-          for (; nextCreation < i; nextCreation++) {
-            id = data[foreignKey];
-            if (32 <= ++foreignKey) {
-              /** @type {number} */
-              foreignKey = 0;
-              aidn.util.shuffleArray(data);
-            }
-            me.changeId(id, 0, true);
-          }
-        }
-      }
-    })();
-    canvas.render(container);
-    window.requestAnimFrame(update);
-  }
-  /**
-   * @return {undefined}
-   */
-  function buildCursor() {
-    if (!(p || isVirtual)) {
-      /** @type {boolean} */
-      isVirtual = true;
-      $("#bt_back").stop().fadeIn(200, "linear");
-      if (B) {
-        $("#bt_fs").stop().fadeIn(200, "linear");
-      }
-      $("#scene_main .set").stop().fadeIn(200, "linear");
-    }
-  }
-  aidn.util.useDummyDiv();
-  /**
-   * @return {undefined}
-   */
-  this.init = function() {
-    !function() {
-      aidn.window.addDummyDiv();
-      try {
-        aidn.adv.show();
-      } catch (n) {
-      }
-      /** @type {number} */
-      var res = 1;
-      if (2 <= window.devicePixelRatio) {
-        /** @type {number} */
-        res = 2;
-      }
-      /** @type {boolean} */
-      (canvas = PIXI.autoDetectRenderer(width, height, {
-        backgroundColor : 16756655,
-        antialias : false,
-        resolution : res
-      })).autoResize = true;
-      document.getElementById("view").appendChild(canvas.view);
-      container = new PIXI.Container;
-      me.init();
-      resizeInput();
-      $("#scene_top").fadeIn(300);
-      update();
-    }();
-  };
-  /** @type {number} */
-  var y = 0;
-  /** @type {number} */
-  var factor = 6e4 / 280;
-  /** @type {number} */
-  var id = Math.floor(32 * Math.random());
-  /** @type {number} */
-  var tmax = 0;
-  /** @type {!Array} */
-  var data = [];
-  /** @type {number} */
-  var foreignKey = 0;
-  /** @type {number} */
-  var courseId = 0;
-  for (; courseId < 32; courseId++) {
-    /** @type {number} */
-    data[courseId] = courseId;
-  }
-  /** @type {boolean} */
-  var p = false;
-  if (1 == aidn.util.getQuery().auto) {
-    /** @type {boolean} */
-    p = true;
-  }
-  aidn.util.needExpandArea(true);
-  var B = aidn.util.enabledFullscreen();
-  if (B) {
-    $("#bt_fs").css("display", "block");
-    $("#bt_fs").click(function(n) {
-      aidn.util.fullscreen();
-    });
-  }
-  $("#bt_start a").click(function(event) {
-    $("#scene_top").stop().fadeOut(200, "linear");
-    $("#scene_loading").stop().fadeIn(200, "linear");
-    if (2 == s2) {
-      f();
-    } else {
-      (new aidn.WebAudio).load("");
-      x.init(app, e);
-    }
-    try {
-      aidn.adv.hide();
-    } catch (n) {
-    }
-    event.preventDefault();
-  });
-  $("#bt_about a").click(function(event) {
-    $("#about").stop().fadeIn(200, "linear");
-    $("#about_cover").stop().fadeIn(200, "linear");
-    event.preventDefault();
-  });
-  $("#bt_close,#about_cover").click(function() {
-    $("#about").stop().fadeOut(200, "linear");
-    $("#about_cover").stop().fadeOut(200, "linear");
-  });
-  $("#bt_back").click(function() {
-    switch(b) {
-      case 1:
-        /** @type {number} */
-        b = 0;
-        try {
-          aidn.adv.show();
-        } catch (n) {
-        }
-        me.end();
-        x.end();
-        $("#scene_top").stop().fadeIn(100, "linear");
-        $("#scene_loading").stop().fadeOut(100, "linear");
-        $("#scene_main").stop().fadeOut(100, "linear");
-        buildCursor();
-        break;
-      default:
-        /** @type {string} */
-        location.href = "../contents/";
-    }
-  });
-  $("#bt_feedback a").click(create);
-  $("#bt_backtrack a").click(register);
-  var width;
-  var height;
-  var arraynames = aidn.util.checkJapanese();
-  var currentRoot = aidn.util.checkMobile();
-  /** @type {string} */
-  var artistTrack = "https://aidn.jp/mikutap/";
-  /** @type {string} */
-  var out = "Mikutap";
-  /** @type {string} */
-  out = out + (arraynames ? ",\u86fb\u665e\u6d79\u7e5d\u6e98\u305110\u873b\uff68\u87f7\uff74" : ",Miku10th");
-  $("#bt_tw").click(function(n) {
-    /** @type {string} */
-    var orig_doc_title = document.title;
-    aidn.social.shareTw(artistTrack, true, orig_doc_title, "daniwell_aidn", out);
-  });
-  $("#bt_fb").click(function(n) {
-    aidn.social.shareFb(artistTrack, true);
-  });
-  $("#bt_gp").click(function(n) {
-    aidn.social.shareGp(artistTrack, true);
-  });
-  var noteOnAt;
-  var canvas;
-  var container;
-  /** @type {number} */
-  var s2 = 0;
-  /** @type {number} */
-  var b = 0;
-  var x = new function() {
-    /**
-     * @return {undefined}
-     */
-    function cont() {
-      if (end) {
-        end();
-      }
-    }
-    /**
-     * @param {?} a
-     * @param {?} b
-     * @return {undefined}
-     */
-    function onerror(a, b) {
-      if (f) {
-        f(a, b);
-      }
-    }
-    var stage;
-    /**
-     * @param {!Function} fn
-     * @param {!Function} o
-     * @return {undefined}
-     */
-    this.init = function(fn, o) {
-      /** @type {!Function} */
-      f = o;
-      (function(defaultValue) {
-        /** @type {!Function} */
-        end = defaultValue;
-        /** @type {!Array} */
-        var sequenceSeed = [];
-        /** @type {number} */
-        var i = 0;
-        for (; i < length; i++) {
-          /** @type {!Array} */
-          sequenceSeed[i] = [i + ".mp3"];
-        }
-        (stage = new WebAudioManager).load("data/track/track.json", sequenceSeed, cont, onerror);
-      })(fn);
-    };
-    /**
-     * @return {undefined}
-     */
-    this.update = function() {
-      !function() {
-        if (l) {
-          /** @type {number} */
-          var y = 1e3 * (aidn.___waContext.currentTime - noteOnAt);
-          if (start * factor < y) {
-            /** @type {number} */
-            var z = (start = Math.floor(y / factor) + 1) * factor - y;
-            if (0 <= z) {
-              if (!T) {
+    function r() {
+        C.update(),
+        1 == x && --D < 0 && v(),
+        function() {
+            if (!p)
                 return;
-              }
-              /** @type {number} */
-              var id = (start - 1) % add;
-              /** @type {number} */
-              var i = options.length;
-              /** @type {number} */
-              var dep = 0;
-              for (; dep < i; dep++) {
-                var x = options[dep][id];
-                if (0 <= x) {
-                  stage.play(x, z / 1E3, args[x]);
+            if (1 != x)
+                return;
+            var n = 1e3 * (aidn.___waContext.currentTime - m);
+            if (l * s < n) {
+                var a = Math.floor(n / s) + 1;
+                h += a - l;
+                var e = (l = a) * s - n;
+                if (0 <= e) {
+                    var t = Math.random()
+                      , i = 1;
+                    192 <= h ? h = 0 : 128 <= h ? (t < .7 && (i = 2),
+                    t < .5 && (i = 3)) : 64 <= h ? (t < .35 && (i = 2),
+                    t < .2 && (i = 3),
+                    t < .02 && (i = 0)) : 32 <= h ? (t < .35 && (i = 2),
+                    t < .24 && (i = 0)) : 0 <= h && t < .4 && (i = 0);
+                    for (var o = 0; o < i; o++)
+                        d = c[f],
+                        32 <= ++f && (f = 0,
+                        aidn.util.shuffleArray(c)),
+                        g.changeId(d, 0, !0)
                 }
-              }
             }
-          }
-        }
-      }();
-    };
-    /**
-     * @return {undefined}
-     */
-    this.start = function() {
-      /** @type {boolean} */
-      l = true;
-      /** @type {number} */
-      start = 0;
-    };
-    /**
-     * @return {undefined}
-     */
-    this.end = function() {
-      /** @type {boolean} */
-      l = false;
-      /** @type {number} */
-      start = 0;
-    };
-    /** @type {boolean} */
-    var l = false;
-    /** @type {number} */
-    var length = 11;
-    /** @type {number} */
-    this.length = length;
-    /** @type {!Array} */
-    var args = [];
-    /** @type {number} */
-    var i = 0;
-    for (; i < length; i++) {
-      /** @type {number} */
-      args[i] = 1.2;
+        }(),
+        I.render(z),
+        window.requestAnimFrame(r)
     }
-    args[1] *= .6;
-    /** @type {!Array} */
-    var options = [[0, 1, 2, 1], []];
-    /** @type {string} */
-    var s = "";
-    /** @type {string} */
-    s = s + "3443443443443434";
-    /** @type {string} */
-    s = s + "5665665665665656";
-    /** @type {string} */
-    s = s + "7887887887887878";
-    /** @type {number} */
-    var patchLen = (s = s + "9119119119119191").length;
-    /** @type {number} */
-    i = 0;
-    for (; i < patchLen; i++) {
-      /** @type {number} */
-      var h = parseInt(s.charAt(i));
-      if (1 == h) {
-        /** @type {number} */
-        h = 10;
-      }
-      /** @type {number} */
-      options[1][i] = h;
-      if (4 <= i) {
-        options[0][i] = options[0][i % 4];
-      }
-    }
-    var end;
-    var f;
-    var add = options[0].length;
-    /** @type {number} */
-    var start = 0;
-    /** @type {number} */
-    var factor = 6E4 / 280;
-  };
-  var list = new function() {
-    /**
-     * @return {undefined}
-     */
-    function cont() {
-      if (end) {
-        end();
-      }
-    }
-    /**
-     * @param {?} a
-     * @param {?} b
-     * @return {undefined}
-     */
-    function orig(a, b) {
-      if (imgItAuto) {
-        imgItAuto(a, b);
-      }
-    }
-    var o;
-    /** @type {number} */
-    var curr_val = -1;
-    /** @type {number} */
-    var unit = -1;
-    /**
-     * @param {!Function} a
-     * @param {!Function} b
-     * @return {undefined}
-     */
-    this.init = function(a, b) {
-      /** @type {!Function} */
-      imgItAuto = b;
-      (function(dst) {
-        /** @type {!Function} */
-        end = dst;
-        /** @type {!Array} */
-        var sequenceSeed = [];
-        /** @type {number} */
-        var i = 0;
-        for (; i < length; i++) {
-          /** @type {!Array} */
-          sequenceSeed[i] = [i + ".mp3"];
-        }
-        (o = new WebAudioManager).load("data/main/main.json", sequenceSeed, cont, orig);
-      })(a);
-    };
-    /**
-     * @param {number} i
-     * @param {!Function} data
-     * @return {undefined}
-     */
-    this.play = function(i, data) {
-      /** @type {number} */
-      var idx = 1E3 * (aidn.___waContext.currentTime + conf_shortcuts_icon[i] - noteOnAt);
-      /** @type {number} */
-      var new_curr_val = Math.floor(idx / numCircles);
-      if (new_curr_val == curr_val && 0 <= unit) {
-        o.stop(unit);
-      }
-      /** @type {number} */
-      curr_val = new_curr_val;
-      /** @type {number} */
-      unit = i;
-      /** @type {number} */
-      var threshDelta = numCircles - idx % numCircles;
-      o.play(i, threshDelta / 1E3, xy[i]);
-    };
-    /** @type {number} */
-    var length = 32;
-    /** @type {number} */
-    this.length = length;
-    /** @type {!Array} */
-    var xy = [];
-    /** @type {!Array} */
-    var conf_shortcuts_icon = [];
-    /** @type {number} */
-    var i = 0;
-    for (; i < length; i++) {
-      /** @type {number} */
-      xy[i] = 1;
-      /** @type {number} */
-      conf_shortcuts_icon[i] = .05;
-    }
-    /** @type {number} */
-    conf_shortcuts_icon[6] = .08;
-    /** @type {number} */
-    conf_shortcuts_icon[20] = .1;
-    /** @type {number} */
-    conf_shortcuts_icon[23] = .1;
-    /** @type {number} */
-    xy[1] = 1.3;
-    /** @type {number} */
-    xy[2] = 1.6;
-    /** @type {number} */
-    xy[3] = 1.35;
-    /** @type {number} */
-    xy[5] = 1.7;
-    /** @type {number} */
-    xy[9] = .8;
-    /** @type {number} */
-    xy[17] = .8;
-    /** @type {number} */
-    xy[22] = .9;
-    /** @type {number} */
-    xy[25] = .7;
-    /** @type {number} */
-    xy[29] = 1.2;
-    /** @type {number} */
-    i = 0;
-    for (; i < length; i++) {
-      xy[i] *= 1.2;
-    }
-    var end;
-    var imgItAuto;
-    /** @type {number} */
-    var numCircles = 6E4 / 280;
-  };
-  var me = new function() {
-    /**
-     * @param {?} a
-     * @param {?} d
-     * @return {?}
-     */
-    function m(a, d) {
-      /** @type {number} */
-      var nbElts = data.length;
-      /** @type {number} */
-      var i = 0;
-      for (; i < nbElts; i++) {
-        var t = data[i];
-        if (t.hitcheck(a, d)) {
-          return prev != t.id && t.play(), t.id;
-        }
-      }
-      return false;
-    }
-    /**
-     * @param {!Event} event
-     * @return {undefined}
-     */
-    function handleEscKeydown(event) {
-      callback(65 <= event.keyCode ? event.keyCode - 55 : 48 <= event.keyCode ? event.keyCode - 48 : event.keyCode);
-    }
-    /**
-     * @param {?} n
-     * @return {undefined}
-     */
-    function debouncedUpdateResize(n) {
-      callback(-1);
-    }
-    /**
-     * @param {!KeyboardEvent} e
-     * @return {undefined}
-     */
-    function move(e) {
-      /** @type {boolean} */
-      y = true;
-      var point = aidn.event.getPos(e);
-      var node = m(point.x, point.y);
-      if (callback(node), e.originalEvent && e.originalEvent.touches) {
-        var patchLen = e.originalEvent.touches.length;
-        /** @type {number} */
-        var i = 1;
-        for (; i < patchLen; i++) {
-          var point = e.originalEvent.touches[i];
-          callback(node = m(point.pageX, point.pageY), 1);
-        }
-      }
-    }
-    /**
-     * @param {!Event} e
-     * @return {undefined}
-     */
-    function end(e) {
-      if (y) {
-        var point = aidn.event.getPos(e);
-        callback(m(point.x, point.y), 0, true);
-      }
-      e.preventDefault();
-    }
-    /**
-     * @param {?} s
-     * @return {undefined}
-     */
-    function h(s) {
-      if (y) {
-        callback(-1);
-        /** @type {boolean} */
-        y = false;
-      }
-    }
-    /**
-     * @param {number} n
-     * @param {number} elem
-     * @param {!Function} type
-     * @return {undefined}
-     */
-    function callback(n, elem, type) {
-      var i;
-      var row;
-      if (prev != n) {
-        if (1 != elem) {
-          /** @type {number} */
-          prev = n;
-        }
-        if (!(prev < 0)) {
-          list.play(n % list.length, type);
-          /** @type {number} */
-          D = 90;
-          if (isVirtual) {
-            /** @type {boolean} */
-            isVirtual = false;
-            $("#bt_back").stop().fadeOut(200, "linear");
-            if (B) {
-              $("#bt_fs").stop().fadeOut(200, "linear");
-            }
-            $("#scene_main .set").stop().fadeOut(200, "linear");
-          }
-          if (--t <= 0) {
-            /** @type {number} */
-            row = (i = Math.floor(h1Words.length * Math.random())) + titleWords.length;
-            (nodeToOutlets[row].length ? nodeToOutlets[row].pop() : new h1Words[i](canvas, row)).play();
-            /** @type {number} */
-            t = 12 * Math.random() + 6;
-          }
-          /** @type {number} */
-          i = n % titleWords.length;
-          (0 < nodeToOutlets[i].length ? nodeToOutlets[i].pop() : new titleWords[i](canvas, i)).play();
-        }
-      }
-    }
-    /**
-     * @return {?}
-     */
-    function parseInt() {
-      /** @type {number} */
-      var n = Math.random();
-      return n < .03 ? 4473924 : n < .18 ? 16777215 : format[toString()];
-    }
-    /**
-     * @return {?}
-     */
-    function toString() {
-      /** @type {number} */
-      var n = 0;
-      for (; n < 10; n++) {
-        /** @type {number} */
-        var a = Math.floor(length * Math.random());
-        if (2 < Math.abs(x - a)) {
-          break;
-        }
-      }
-      return a;
-    }
-    /**
-     * @param {string} component
-     * @param {!Object} stage
-     * @return {undefined}
-     */
-    var init = function(component, stage) {
-      /** @type {string} */
-      this.id = component;
-      /**
-       * @param {number} x
-       * @param {number} y
-       * @return {undefined}
-       */
-      this.setPosition = function(x, y) {
-        graphics.position.x = start = x;
-        graphics.position.y = b = y;
-      };
-      /**
-       * @param {number} value
-       * @param {number} type
-       * @return {undefined}
-       */
-      this.setSize = function(value, type) {
-        /** @type {number} */
-        width = value;
-        /** @type {number} */
-        t = type;
-        graphics.clear();
-        graphics.beginFill(16777215);
-        /** @type {number} */
-        graphics.alpha = 0;
-        graphics.drawRect(0, 0, width, t);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        if (U) {
-          TweenLite.fromTo(graphics, .5, {
-            alpha : .7
-          }, {
-            alpha : 0,
-            ease : Power0.easeNon
-          });
-        }
-      };
-      /**
-       * @param {?} i
-       * @param {?} a
-       * @return {?}
-       */
-      this.hitcheck = function(i, a) {
-        return start <= i && i < start + width && b <= a && a < b + t;
-      };
-      /** @type {number} */
-      var start = 0;
-      /** @type {number} */
-      var b = 0;
-      /** @type {number} */
-      var width = 0;
-      /** @type {number} */
-      var t = 0;
-      var graphics = new PIXI.Graphics;
-      /** @type {boolean} */
-      graphics.interactive = true;
-      stage.addChild(graphics);
-    };
-    /**
-     * @param {!Object} aFormValues
-     * @return {undefined}
-     */
-    var FloatingPanel = function(aFormValues) {
-      /**
-       * @return {undefined}
-       */
-      function init() {
-        o.clear();
-        o.beginFill(16777215);
-        o.drawRect(0, 0, width, height);
-      }
-      /**
-       * @return {undefined}
-       */
-      function removeErrorStatus() {
-        blurFBO.resize();
-      }
-      /**
-       * @return {undefined}
-       */
-      this.resize = function() {
-        o.clear();
-        o.beginFill(fill);
-        o.drawRect(0, 0, width, height);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.flash = function() {
-        p.setChildIndex(o, p.children.length - 1);
-        /** @type {number} */
-        var value = 0;
-        for (; value < 3; value = value + 2) {
-          TweenLite.delayedCall(.07 * value, init);
-          TweenLite.delayedCall(.07 * (value + 1), removeErrorStatus);
-        }
-      };
-      /**
-       * @param {number} color
-       * @param {number} index
-       * @return {undefined}
-       */
-      this.setColor = function(color, index) {
-        /** @type {number} */
-        fill = color;
-        index = 0 <= index ? index : 0;
-        p.setChildIndex(o, index);
-        blurFBO.resize();
-      };
-      var blurFBO = this;
-      /** @type {number} */
-      var fill = 16777215;
-      var o = new PIXI.Graphics;
-      /** @type {!Object} */
-      var p = aFormValues;
-      p.addChild(o);
-    };
-    /**
-     * @param {?} data
-     * @param {!Object} options
-     * @return {undefined}
-     */
-    var Animation = function(data, options) {
-      /**
-       * @return {undefined}
-       */
-      function draw() {
-        var a;
-        var x;
-        var height;
-        /** @type {number} */
-        var h = 1.3 * r;
-        if (g.clear(), g.beginFill(0), g.moveTo(0, 0), 0 == o) {
-          /** @type {number} */
-          var i = 0;
-          for (; i < target.rotation; i = i + 30) {
-            /** @type {number} */
-            a = (value * i + fraction) * Math.PI / 180;
-            /** @type {number} */
-            x = Math.cos(a) * h;
-            /** @type {number} */
-            height = Math.sin(a) * h;
-            g.lineTo(x, height);
-          }
-        } else {
-          /** @type {number} */
-          i = 360;
-          for (; target.rotation < i; i = i - 30) {
-            /** @type {number} */
-            a = (value * i + fraction) * Math.PI / 180;
-            /** @type {number} */
-            x = Math.cos(a) * h;
-            /** @type {number} */
-            height = Math.sin(a) * h;
-            g.lineTo(x, height);
-          }
-        }
-        /** @type {number} */
-        a = (value * target.rotation + fraction) * Math.PI / 180;
-        /** @type {number} */
-        x = Math.cos(a) * h;
-        /** @type {number} */
-        height = Math.sin(a) * h;
-        g.lineTo(x, height);
-        g.lineTo(0, 0);
-        g.endFill();
-      }
-      /**
-       * @return {undefined}
-       */
-      function animate() {
-        /** @type {number} */
-        o = 1;
-        TweenLite.fromTo(target, .9, {
-          rotation : 0
-        }, {
-          rotation : 360,
-          ease : Power1.easeOut,
-          onUpdate : draw,
-          onComplete : clear
-        });
-      }
-      /**
-       * @return {undefined}
-       */
-      function clear() {
-        if (done) {
-          done();
-        }
-      }
-      /**
-       * @param {number} x
-       * @param {!Function} data
-       * @return {undefined}
-       */
-      this.play = function(x, data) {
-        /** @type {number} */
-        o = 0;
-        /** @type {number} */
-        r = x;
-        /** @type {!Function} */
-        done = data;
-        /** @type {number} */
-        fraction = 360 * Math.random();
-        /** @type {number} */
-        value = 1;
-        if (Math.random() < .5) {
-          /** @type {number} */
-          value = -1;
-        }
-        g.clear();
-        g.beginFill(0);
-        g.moveTo(0, 0);
-        g.lineTo(1, 1);
-        g.endFill();
-        TweenLite.fromTo(target, .6, {
-          rotation : 0
-        }, {
-          rotation : 360,
-          ease : Power1.easeOut,
-          onUpdate : draw,
-          onComplete : animate
-        });
-      };
-      var o;
-      var done;
-      var fraction;
-      var value;
-      var r;
-      var textureData = data;
-      var target = {
-        rotation : 0
-      };
-      var g = new PIXI.Graphics;
-      textureData.addChild(g);
-      options.mask = g;
-    };
-    /**
-     * @param {!Object} viewContainer
-     * @return {undefined}
-     */
-    var constructor = function(viewContainer) {
-      /**
-       * @return {undefined}
-       */
-      function draw() {
-        me.clear();
-        if (0 == ongoingMessage) {
-          me.lineStyle(style, color);
-        } else {
-          me.beginFill(color);
-        }
-        /** @type {number} */
-        var i = 0;
-        for (; i < channelCount; i++) {
-          var a = self["p" + i].x;
-          var miny = self["p" + i].y;
-          if (0 == i) {
-            me.moveTo(a, miny);
-          } else {
-            me.lineTo(a, miny);
-          }
-        }
-        a = self.p0.x;
-        miny = self.p0.y;
-        me.lineTo(a, miny);
-      }
-      /**
-       * @return {undefined}
-       */
-      function animate() {
-        /** @type {boolean} */
-        me.visible = false;
-        if (log) {
-          log();
-        }
-      }
-      /**
-       * @param {number} message
-       * @param {!Function} data
-       * @return {undefined}
-       */
-      this.play = function(message, data) {
-        /** @type {number} */
-        ongoingMessage = message;
-        /** @type {!Function} */
-        log = data;
-        (function() {
-          container.setChildIndex(me, container.children.length - 1);
-          /** @type {boolean} */
-          me.visible = true;
-          /** @type {number} */
-          me.x = width / 2;
-          /** @type {number} */
-          me.y = height / 2;
-          color = parseInt();
-          var wt;
-          /** @type {number} */
-          var a = Math.min(width, height) * (.32 * Math.random() + .16);
-          /** @type {number} */
-          var val = Math.floor(5 * Math.random()) + 3;
-          /** @type {number} */
-          channelCount = val;
-          /** @type {number} */
-          style = 5 * Math.random() + 3;
-          me.clear();
-          /** @type {number} */
-          me.rotation = 30 * Math.floor(6 * Math.random());
-          self = {};
-          /** @type {number} */
-          wt = 0 == ongoingMessage ? 3 : 2.5;
-          /** @type {number} */
-          var size = 360 / channelCount;
-          /** @type {number} */
-          var i = 0;
-          for (; i < channelCount; i++) {
-            /** @type {number} */
-            var nt = i * size * Math.PI / 180;
-            /** @type {number} */
-            var r = a * Math.cos(nt);
-            /** @type {number} */
-            var b = a * Math.sin(nt);
-            /** @type {number} */
-            var row = r + a * (Math.random() - .5) * wt;
-            /** @type {number} */
-            var v = b + a * (Math.random() - .5) * wt;
-            self["p" + i] = {
-              x : r,
-              y : b
-            };
-            TweenLite.to(self["p" + i], .6, {
-              x : row,
-              y : v
-            });
-          }
-          /** @type {number} */
-          self.progress = 0;
-          TweenLite.to(self, .8, {
-            progress : 1,
-            onUpdate : draw,
-            onComplete : animate
-          });
-        })();
-      };
-      var log;
-      var ongoingMessage;
-      var color;
-      var style;
-      var channelCount;
-      /** @type {!Object} */
-      var container = viewContainer;
-      var me = new PIXI.Graphics;
-      container.addChild(me);
-      var self = {};
-    };
-    /**
-     * @param {!Object} data
-     * @param {string} id
-     * @return {undefined}
-     */
-    var createButton = function(data, id) {
-      /**
-       * @return {undefined}
-       */
-      function callback() {
-        /** @type {boolean} */
-        c.visible = false;
-        if (0 <= node.id) {
-          nodeToOutlets[node.id].push(node);
-        }
-        if (e) {
-          e();
-        }
-      }
-      /**
-       * @param {?} game
-       * @return {undefined}
-       */
-      var Play = function(game) {
-        /**
-         * @return {undefined}
-         */
-        function _createBodyPrimitive() {
-          ctx.clear();
-          ctx.lineStyle(width, style);
-          ctx.moveTo(scale.x, scale.y);
-          if (0 == u) {
-            ctx.lineTo(r.x, r.y);
-          } else {
-            ctx.lineTo(item.x, item.y);
-          }
-        }
-        /**
-         * @return {undefined}
-         */
-        function animate() {
-          if (0 == u) {
-            /** @type {number} */
-            u = 1;
-            scale = {
-              x : r.x,
-              y : r.y
-            };
-            TweenLite.to(scale, duration, {
-              x : item.x,
-              y : item.y,
-              ease : Power1.easeOut,
-              onUpdate : _createBodyPrimitive,
-              onComplete : animate
-            });
-          } else {
-            ctx.clear();
-            /** @type {boolean} */
-            ctx.visible = false;
-          }
-        }
-        /**
-         * @param {number} x
-         * @param {!Function} data
-         * @param {number} source
-         * @param {number} obj
-         * @return {?}
-         */
-        this.play = function(x, data, source, obj) {
-          return ctx.visible = true, u = 0, r = x, item = data, width = source, style = obj, time = .2 * Math.random() + .2, duration = .2 * Math.random() + .2, scale = {
-            x : r.x,
-            y : r.y
-          }, TweenLite.to(scale, time, {
-            x : item.x,
-            y : item.y,
-            ease : Power1.easeOut,
-            onUpdate : _createBodyPrimitive,
-            onComplete : animate
-          }), time + duration;
-        };
-        var r;
-        var item;
-        var scale;
-        var width;
-        var style;
-        var time;
-        var duration;
-        var u;
-        var appid = game;
-        var ctx = new PIXI.Graphics;
-        appid.addChild(ctx);
-      };
-      /**
-       * @param {number} a
-       * @return {undefined}
-       */
-      this.play = function(a) {
-        /** @type {number} */
-        e = a;
-        (function() {
-          p.setChildIndex(c, p.children.length - 1);
-          /** @type {boolean} */
-          c.visible = true;
-          /** @type {number} */
-          c.x = width / 2;
-          /** @type {number} */
-          c.y = height / 2;
-          /** @type {number} */
-          c.rotation = .5 * Math.PI * Math.floor(4 * Math.random());
-          var end;
-          /** @type {number} */
-          var e = Math.floor(7 * Math.random() + 2);
-          /** @type {number} */
-          var s = .8 * Math.min(width, height);
-          /** @type {number} */
-          var hLen = (node.size = s) / e * (.4 * Math.random() + .7);
-          /** @type {number} */
-          var index = s / e * (.4 * Math.random() + .1);
-          var duration = parseInt();
-          /** @type {number} */
-          var target = 0;
-          /** @type {number} */
-          var l = 0;
-          for (; l <= e; l++) {
-            /** @type {number} */
-            var destPos = (l - .5 * e) * hLen;
-            var d = {
-              x : -s / 2,
-              y : destPos
-            };
-            var data = {
-              x : s / 2,
-              y : destPos
-            };
-            var value = (end = lg[l] ? lg[l] : new Play(c)).play(d, data, index, duration);
-            if (target < value) {
-              target = value;
-            }
-            lg[l] = end;
-          }
-          TweenLite.delayedCall(target, callback);
-        })();
-      };
-      var node = this;
-      /** @type {!Object} */
-      var p = data;
-      /** @type {string} */
-      this.id = id;
-      var e;
-      var c = new PIXI.Container;
-      /** @type {!Array} */
-      var lg = [];
-      /** @type {number} */
-      this.size = 0;
-      this.container = c;
-      p.addChild(c);
-    };
-    /**
-     * @return {undefined}
-     */
-    this.resize = function() {
-      if (w) {
-        /** @type {number} */
-        var id = 0;
-        /** @type {number} */
-        var size = squareSize;
-        /** @type {number} */
-        var zoom = prefSize;
-        if (height < width) {
-          /** @type {number} */
-          size = prefSize;
-          /** @type {number} */
-          zoom = squareSize;
-        }
-        /** @type {number} */
-        var x = width / size;
-        /** @type {number} */
-        var y = height / zoom;
-        /** @type {number} */
-        var z = 0;
-        for (; z < zoom; z++) {
-          /** @type {number} */
-          var i = 0;
-          for (; i < size; i++) {
-            var context;
-            if (data[id]) {
-              context = data[id];
-            } else {
-              context = new init(id, element);
-              data[id] = context;
-            }
-            context.setPosition(x * i, y * z);
-            context.setSize(x, y);
-            id++;
-          }
-        }
-        input.resize();
-      }
-    };
-    /**
-     * @return {undefined}
-     */
     this.init = function() {
-      /** @type {boolean} */
-      w = true;
-      canvas = new PIXI.Container;
-      container.addChild(canvas);
-      element = new PIXI.Container;
-      container.addChild(element);
-      (input = new FloatingPanel(canvas)).setColor(8965324, 0);
-    };
-    /**
-     * @return {undefined}
-     */
-    this.start = function() {
-      if (!currentRoot) {
-        $("#view").on("mousedown", move);
-        $(window).on("mousemove", end);
-        $(window).on("mouseup", h);
-        $(window).on("keydown", handleEscKeydown);
-        $(window).on("keyup", debouncedUpdateResize);
-      }
-      if (currentRoot || window.TouchEvent) {
-        $("#view").on("touchstart", move);
-        $(window).on("touchmove", end);
-        $(window).on("touchend", h);
-      }
-      $("#view").css("cursor", "pointer");
-    };
-    /**
-     * @return {undefined}
-     */
-    this.end = function() {
-      if (!currentRoot) {
-        $("#view").off("mousedown", move);
-        $(window).off("mousemove", end);
-        $(window).off("mouseup", h);
-        $(window).off("keydown", handleEscKeydown);
-        $(window).off("keyup", debouncedUpdateResize);
-      }
-      if (currentRoot || window.TouchEvent) {
-        $("#view").off("touchstart", move);
-        $(window).off("touchmove", end);
-        $(window).off("touchend", h);
-      }
-      $("#view").css("cursor", "auto");
-    };
-    /**
-     * @param {undefined} n
-     * @param {number} e
-     * @param {!Function} id
-     * @return {undefined}
-     */
-    this.changeId = function(n, e, id) {
-      callback(n, e, id);
-    };
-    var element;
-    /** @type {number} */
-    var prev = -1;
-    /** @type {number} */
-    var squareSize = 4;
-    /** @type {number} */
-    var prefSize = 8;
-    /** @type {boolean} */
-    var y = false;
-    /** @type {boolean} */
-    var w = false;
-    /** @type {!Array} */
-    var data = [];
-    /** @type {!Array} */
-    var titleWords = [function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function callback() {
-        /** @type {boolean} */
-        child.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @param {?} bruce
-       * @return {undefined}
-       */
-      var Play = function(bruce) {
-        /**
-         * @return {undefined}
-         */
-        function fun() {
-          /** @type {boolean} */
-          self.visible = false;
-        }
-        /**
-         * @param {number} num
-         * @param {string} data
-         * @param {number} color
-         * @return {?}
-         */
-        this.play = function(num, data, color) {
-          /** @type {boolean} */
-          self.visible = true;
-          self.clear();
-          /** @type {number} */
-          var x = width * Math.random();
-          /** @type {number} */
-          var top = height * Math.random();
-          /** @type {number} */
-          var radius = Math.min(width, height) * (.03 * Math.random() + .02);
-          self.lineStyle(3 * Math.random() + 3, color);
-          self.drawCircle(0, 0, radius);
-          /** @type {number} */
-          self.x = num;
-          /** @type {string} */
-          self.y = data;
-          /** @type {number} */
-          self.scale.x = 0;
-          /** @type {number} */
-          self.scale.y = 0;
-          /** @type {number} */
-          self.rotation = Math.random() * Math.PI;
-          /** @type {number} */
-          var duration = .2 * Math.random() + .4;
-          return TweenLite.to(self, duration, {
-            x : x,
-            y : top,
-            rotation : Math.random() * Math.PI,
-            ease : Power3.easeOut,
-            onComplete : fun
-          }), TweenLite.to(self.scale, duration, {
-            x : 1,
-            y : 1,
-            ease : Back.easeOut.config(1.7)
-          }), duration;
-        };
-        var a = bruce;
-        var self = new PIXI.Graphics;
-        a.addChild(self);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
         !function() {
-          container.setChildIndex(child, container.children.length - 1);
-          /** @type {boolean} */
-          child.visible = true;
-          /** @type {number} */
-          var rown = 5 * Math.random() + 7;
-          /** @type {number} */
-          var target = 0;
-          /** @type {number} */
-          var e = width / 2;
-          /** @type {number} */
-          var type = height / 2;
-          var index = parseInt();
-          /** @type {number} */
-          var j = 0;
-          for (; j < rown; j++) {
-            var tmp0;
-            tmp0 = tmp1[j] ? tmp1[j] : new Play(child);
-            var value = (tmp1[j] = tmp0).play(e, type, index);
-            if (target < value) {
-              target = value;
-            }
-          }
-          TweenLite.delayedCall(target, callback);
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {number} */
-      this.id = pluginid;
-      /** @type {!Array} */
-      var tmp1 = [];
-      var child = new PIXI.Container;
-      container.addChild(child);
-    }, function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function callback() {
-        /** @type {boolean} */
-        child.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @param {?} bruce
-       * @return {undefined}
-       */
-      var Play = function(bruce) {
-        /**
-         * @return {undefined}
-         */
-        function fun() {
-          /** @type {boolean} */
-          self.visible = false;
-        }
-        /**
-         * @param {number} num
-         * @param {number} data
-         * @param {number} color
-         * @return {?}
-         */
-        this.play = function(num, data, color) {
-          /** @type {boolean} */
-          self.visible = true;
-          self.clear();
-          /** @type {number} */
-          var x = width * Math.random();
-          /** @type {number} */
-          var top = height * Math.random();
-          /** @type {number} */
-          var size = Math.min(width, height) * (.04 * Math.random() + .02);
-          self.beginFill(color);
-          self.drawRect(-size / 2, -size / 2, size, size);
-          /** @type {number} */
-          self.x = num;
-          /** @type {number} */
-          self.y = data;
-          /** @type {number} */
-          self.scale.x = 0;
-          /** @type {number} */
-          self.scale.y = 0;
-          /** @type {number} */
-          self.rotation = Math.random() * Math.PI;
-          /** @type {number} */
-          var duration = .2 * Math.random() + .4;
-          return TweenLite.to(self, duration, {
-            x : x,
-            y : top,
-            rotation : Math.random() * Math.PI,
-            ease : Power3.easeOut,
-            onComplete : fun
-          }), TweenLite.to(self.scale, duration, {
-            x : 1,
-            y : 1,
-            ease : Back.easeOut.config(1.7)
-          }), duration;
-        };
-        var a = bruce;
-        var self = new PIXI.Graphics;
-        a.addChild(self);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          container.setChildIndex(child, container.children.length - 1);
-          /** @type {boolean} */
-          child.visible = true;
-          /** @type {number} */
-          var rown = 5 * Math.random() + 7;
-          /** @type {number} */
-          var target = 0;
-          /** @type {number} */
-          var e = width / 2;
-          /** @type {number} */
-          var type = height / 2;
-          var index = parseInt();
-          /** @type {number} */
-          var j = 0;
-          for (; j < rown; j++) {
-            var tmp0;
-            tmp0 = tmp1[j] ? tmp1[j] : new Play(child);
-            var value = (tmp1[j] = tmp0).play(e, type, index);
-            if (target < value) {
-              target = value;
-            }
-          }
-          TweenLite.delayedCall(target, callback);
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {string} */
-      this.id = pluginid;
-      /** @type {!Array} */
-      var tmp1 = [];
-      var child = new PIXI.Container;
-      container.addChild(child);
-    }, function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function itemsToMenu() {
-        /** @type {boolean} */
-        node.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @param {?} layerArg
-       * @return {undefined}
-       */
-      var Play = function(layerArg) {
-        /**
-         * @return {undefined}
-         */
-        function init() {
-          self.beginFill(color);
-          self.drawCircle(0, 0, r);
-          /** @type {number} */
-          self.scale.x = 0;
-          /** @type {number} */
-          self.scale.y = 0;
-          TweenLite.to(self.scale, .7, {
-            x : 1,
-            y : 1,
-            ease : Elastic.easeOut.config(1, .3),
-            onComplete : updatePos
-          });
-        }
-        /**
-         * @return {undefined}
-         */
-        function updatePos() {
-          TweenLite.to(self.scale, .4, {
-            x : 0,
-            y : 0,
-            ease : Power2.easeOut,
-            onComplete : play,
-            delay : .1
-          });
-        }
-        /**
-         * @return {undefined}
-         */
-        function play() {
-          /** @type {boolean} */
-          self.visible = false;
-          if (val) {
-            val();
-          }
-        }
-        /**
-         * @param {number} start
-         * @param {!Function} value
-         * @param {number} key
-         * @param {number} x
-         * @param {number} obj
-         * @param {!Function} arr
-         * @return {undefined}
-         */
-        this.play = function(start, value, key, x, obj, arr) {
-          /** @type {boolean} */
-          self.visible = true;
-          self.clear();
-          /** @type {number} */
-          self.x = x;
-          /** @type {number} */
-          self.y = obj;
-          /** @type {!Function} */
-          color = value;
-          /** @type {number} */
-          r = key;
-          /** @type {!Function} */
-          val = arr;
-          TweenLite.delayedCall(start, init);
-        };
-        var color;
-        var r;
-        var val;
-        var layer = layerArg;
-        var self = new PIXI.Graphics;
-        layer.addChild(self);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          container.setChildIndex(node, container.children.length - 1);
-          /** @type {boolean} */
-          node.visible = true;
-          /** @type {number} */
-          node.x = width / 2;
-          /** @type {number} */
-          node.y = height / 2;
-          /** @type {number} */
-          node.rotation = Math.random() * Math.PI * 2;
-          /** @type {number} */
-          var n = 10;
-          var type = parseInt();
-          /** @type {number} */
-          var inBy = Math.min(width, height) / 64 * (.6 * Math.random() + .7);
-          /** @type {number} */
-          var index = 2;
-          /** @type {number} */
-          var j = 0;
-          for (; j < 40; j++) {
-            var self;
-            /** @type {number} */
-            var k = 25 * j * Math.PI / 180;
-            /** @type {number} */
-            var offset = n * Math.cos(k);
-            /** @type {number} */
-            var w = n * Math.sin(k);
-            /** @type {number} */
-            n = n + inBy;
-            /** @type {number} */
-            index = index + .22;
-            self = tmp1[j] ? tmp1[j] : new Play(node);
-            tmp1[j] = self;
-            /** @type {null} */
-            var scale = null;
-            if (39 == j) {
-              /** @type {function(): undefined} */
-              scale = itemsToMenu;
-            }
-            self.play(.03 * j, type, index, offset, w, scale);
-          }
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {string} */
-      this.id = pluginid;
-      /** @type {!Array} */
-      var tmp1 = [];
-      var node = new PIXI.Container;
-      container.addChild(node);
-    }, function(ASTnode, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function fn() {
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        instance.play(0, fn);
-      };
-      var fromNode = this;
-      var node = ASTnode;
-      /** @type {number} */
-      this.id = pluginid;
-      var instance = new constructor(node);
-    }, function(ASTnode, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function fn() {
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        instance.play(1, fn);
-      };
-      var fromNode = this;
-      var node = ASTnode;
-      /** @type {string} */
-      this.id = pluginid;
-      var instance = new constructor(node);
-    }, function(undefined, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function callback() {
-        /** @type {boolean} */
-        c.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          stage.setChildIndex(c, stage.children.length - 1);
-          /** @type {boolean} */
-          c.visible = true;
-          /** @type {number} */
-          c.x = width / 2;
-          /** @type {number} */
-          c.y = height / 2;
-          var fill = parseInt();
-          /** @type {number} */
-          var r = Math.min(width, height) * (.28 * Math.random() + .2);
-          /** @type {number} */
-          var resolution = Math.floor(5 * Math.random()) + 3;
-          obj.clear();
-          obj.lineStyle(7 * Math.random() + 4, fill, 1);
-          /** @type {number} */
-          obj.rotation = 30 * Math.floor(6 * Math.random());
-          /** @type {number} */
-          var size = 360 / resolution;
-          /** @type {number} */
-          var i = 0;
-          for (; i <= resolution; i++) {
-            /** @type {number} */
-            var offTh = i * size * Math.PI / 180;
-            /** @type {number} */
-            var x = r * Math.cos(offTh);
-            /** @type {number} */
-            var y = r * Math.sin(offTh);
-            if (0 == i) {
-              obj.moveTo(x, y);
-            } else {
-              obj.lineTo(x, y);
-            }
-          }
-          /** @type {number} */
-          var crossCenter = .8 * Math.random() + .4;
-          /** @type {number} */
-          var padPx = .8 * Math.random() + .4;
-          TweenLite.fromTo(obj.scale, .9, {
-            x : crossCenter,
-            y : crossCenter
-          }, {
-            x : padPx,
-            y : padPx,
-            ease : Bounce.easeOut
-          });
-          s.play(r, callback);
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var stage = undefined;
-      /** @type {string} */
-      this.id = pluginid;
-      var c = new PIXI.Container;
-      var obj = new PIXI.Graphics;
-      stage.addChild(c);
-      c.addChild(obj);
-      var s = new Animation(c, obj);
-    }, function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function itemsToMenu() {
-        /** @type {boolean} */
-        child.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @param {?} value
-       * @return {undefined}
-       */
-      var line = function(value) {
-        /**
-         * @return {undefined}
-         */
-        function draw() {
-          /** @type {number} */
-          var dimension = Math.min(width, height);
-          /** @type {number} */
-          var size = dimension * (.08 * Math.random() + .05);
-          self.lineStyle(4 * Math.random() + 4, parseInt());
-          self.drawRect(-size / 2, -size / 2, size, size);
-          self.x = newx + dimension / 2 * (Math.random() - .5);
-          self.y = y + dimension / 2 * (Math.random() - .5);
-          /** @type {number} */
-          self.scale.x = 0;
-          /** @type {number} */
-          self.scale.y = 0;
-          /** @type {number} */
-          self.rotation = Math.random() * Math.PI;
-          TweenLite.to(self, .5, {
-            x : newx,
-            y : y,
-            rotation : 0,
-            ease : Back.easeOut.config(1.7),
-            onComplete : init
-          });
-          TweenLite.to(self.scale, .5, {
-            x : 1,
-            y : 1,
-            ease : Back.easeOut.config(1.7)
-          });
-        }
-        /**
-         * @return {undefined}
-         */
-        function init() {
-          /** @type {number} */
-          var maxWH = Math.min(width, height);
-          var audioOffsetX = newx + maxWH / 2 * (Math.random() - .5);
-          var endY = y + maxWH / 2 * (Math.random() - .5);
-          TweenLite.to(self, .5, {
-            x : audioOffsetX,
-            y : endY,
-            rotation : -Math.random() * Math.PI,
-            ease : Back.easeIn.config(1.7),
-            onComplete : fun,
-            delay : .2
-          });
-          TweenLite.to(self.scale, .5, {
-            x : 0,
-            y : 0,
-            ease : Back.easeIn.config(1.7),
-            delay : .2
-          });
-        }
-        /**
-         * @return {undefined}
-         */
-        function fun() {
-          /** @type {boolean} */
-          self.visible = false;
-        }
-        /**
-         * @param {number} start
-         * @param {!Function} data
-         * @return {undefined}
-         */
-        this.play = function(start, data) {
-          /** @type {boolean} */
-          self.visible = true;
-          self.clear();
-          /** @type {number} */
-          newx = width * Math.random();
-          /** @type {number} */
-          y = height * Math.random();
-          TweenLite.delayedCall(start, draw);
-        };
-        var newx;
-        var y;
-        var f = value;
-        var self = new PIXI.Graphics;
-        f.addChild(self);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          container.setChildIndex(child, container.children.length - 1);
-          /** @type {boolean} */
-          child.visible = true;
-          /** @type {number} */
-          var multi = Math.floor(5 * Math.random() + 5);
-          /** @type {number} */
-          var j = 0;
-          for (; j < multi; j++) {
-            var c;
-            c = tmp1[j] ? tmp1[j] : new line(child);
-            tmp1[j] = c;
-            /** @type {null} */
-            var type = null;
-            if (j == multi - 1) {
-              /** @type {function(): undefined} */
-              type = itemsToMenu;
-            }
-            c.play(.06 * j, type);
-          }
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {string} */
-      this.id = pluginid;
-      var child = new PIXI.Container;
-      container.addChild(child);
-      /** @type {!Array} */
-      var tmp1 = [];
-    }, function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function itemsToMenu() {
-        /** @type {boolean} */
-        child.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @param {?} layerArg
-       * @return {undefined}
-       */
-      var Play = function(layerArg) {
-        /**
-         * @return {undefined}
-         */
-        function init() {
-          /** @type {number} */
-          var radius = Math.min(width, height) * (.05 * Math.random() + .014);
-          self.beginFill(parseInt());
-          self.drawCircle(0, 0, radius);
-          self.x = newx;
-          self.y = x;
-          /** @type {number} */
-          self.scale.x = 0;
-          /** @type {number} */
-          self.scale.y = 0;
-          TweenLite.to(self.scale, .5, {
-            x : 1,
-            y : 1,
-            ease : Elastic.easeOut.config(1, .3),
-            onComplete : send
-          });
-        }
-        /**
-         * @return {undefined}
-         */
-        function send() {
-          TweenLite.to(self.scale, .5, {
-            x : 0,
-            y : 0,
-            ease : Back.easeIn.config(1.7),
-            onComplete : fun,
-            delay : .2
-          });
-        }
-        /**
-         * @return {undefined}
-         */
-        function fun() {
-          /** @type {boolean} */
-          self.visible = false;
-        }
-        /**
-         * @param {number} start
-         * @param {!Function} data
-         * @return {undefined}
-         */
-        this.play = function(start, data) {
-          /** @type {boolean} */
-          self.visible = true;
-          self.clear();
-          /** @type {number} */
-          newx = width * Math.random();
-          /** @type {number} */
-          x = height * Math.random();
-          TweenLite.delayedCall(start, init);
-        };
-        var newx;
-        var x;
-        var layer = layerArg;
-        var self = new PIXI.Graphics;
-        layer.addChild(self);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          container.setChildIndex(child, container.children.length - 1);
-          /** @type {boolean} */
-          child.visible = true;
-          /** @type {number} */
-          var multi = Math.floor(5 * Math.random() + 5);
-          /** @type {number} */
-          var j = 0;
-          for (; j < multi; j++) {
-            var c;
-            c = tmp1[j] ? tmp1[j] : new Play(child);
-            tmp1[j] = c;
-            /** @type {null} */
-            var type = null;
-            if (j == multi - 1) {
-              /** @type {function(): undefined} */
-              type = itemsToMenu;
-            }
-            c.play(.06 * j, type);
-          }
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {string} */
-      this.id = pluginid;
-      var child = new PIXI.Container;
-      container.addChild(child);
-      /** @type {!Array} */
-      var tmp1 = [];
-    }, function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function time() {
-        /** @type {boolean} */
-        child.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          /** @type {boolean} */
-          child.visible = true;
-          container.setChildIndex(child, container.children.length - 1);
-          self.container.mask = canvas;
-          self.play(time);
-          /** @type {number} */
-          var spotRadius = self.size / 2;
-          /** @type {number} */
-          canvas.x = width / 2;
-          /** @type {number} */
-          canvas.y = height / 2;
-          canvas.clear();
-          canvas.beginFill(0);
-          canvas.drawCircle(0, 0, spotRadius);
-          /** @type {number} */
-          var rotationDiff = 45 * Math.PI / 180 * Math.floor(2 * Math.random());
-          /** @type {number} */
-          var triggeredDegree = rotationDiff + 45 * Math.PI / 180 * Math.floor(4 * Math.random() - 2);
-          /** @type {number} */
-          var crossCenter = .3 * Math.random() + 1;
-          /** @type {number} */
-          var padPx = .3 * -Math.random() + 1;
-          TweenLite.fromTo(self.container, .6, {
-            rotation : rotationDiff
-          }, {
-            rotation : triggeredDegree,
-            ease : Power2.easeOut
-          });
-          TweenLite.fromTo(self.container.scale, .6, {
-            x : crossCenter,
-            y : crossCenter
-          }, {
-            x : padPx,
-            y : padPx,
-            ease : Back.easeOut.config(1.7)
-          });
-          TweenLite.fromTo(canvas.scale, .6, {
-            x : crossCenter,
-            y : crossCenter
-          }, {
-            x : padPx,
-            y : padPx,
-            ease : Back.easeOut.config(1.7)
-          });
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {number} */
-      this.id = pluginid;
-      var child = new PIXI.Container;
-      container.addChild(child);
-      var canvas = new PIXI.Graphics;
-      child.addChild(canvas);
-      var self = new createButton(child, -1);
-    }, function(undefined, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function fun() {
-        /** @type {boolean} */
-        obj.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          stage.setChildIndex(obj, stage.children.length - 1);
-          obj.clear();
-          /** @type {boolean} */
-          obj.visible = true;
-          obj.lineStyle(5 * Math.random() + 3, parseInt(), 1);
-          /** @type {number} */
-          obj.x = width / 2;
-          /** @type {number} */
-          obj.y = height / 2;
-          /** @type {number} */
-          var val = .6 * Math.min(width, height);
-          /** @type {number} */
-          var resolution = Math.floor(5 * Math.random()) + 3;
-          /** @type {number} */
-          var size = 360 / resolution;
-          /** @type {number} */
-          var crossCenter = .5 * Math.max(width, height) / val * (1.6 + .6 / resolution);
-          /** @type {number} */
-          var i = 0;
-          for (; i <= resolution; i++) {
-            /** @type {number} */
-            var parentRot = i * size * Math.PI / 180;
-            /** @type {number} */
-            var w = val * Math.cos(parentRot);
-            /** @type {number} */
-            var c = val * Math.sin(parentRot);
-            if (0 == i) {
-              obj.moveTo(w, c);
-            } else {
-              obj.lineTo(w, c);
-            }
-          }
-          /** @type {number} */
-          var duration = .3 * Math.random() + .6;
-          TweenLite.fromTo(obj.scale, duration, {
-            x : 0,
-            y : 0
-          }, {
-            x : crossCenter,
-            y : crossCenter,
-            onComplete : fun,
-            ease : Power2.easeOut
-          });
-          TweenLite.fromTo(obj, duration, {
-            rotation : Math.random() * Math.PI
-          }, {
-            rotation : Math.random() * Math.PI,
-            ease : Power1.easeOut
-          });
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var stage = undefined;
-      /** @type {string} */
-      this.id = pluginid;
-      var obj = new PIXI.Graphics;
-      stage.addChild(obj);
-    }, function(undefined, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function fn() {
-        /** @type {boolean} */
-        c.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          stage.setChildIndex(c, stage.children.length - 1);
-          /** @type {boolean} */
-          c.visible = true;
-          /** @type {number} */
-          c.x = width / 2;
-          /** @type {number} */
-          c.y = height / 2;
-          var fill = parseInt();
-          /** @type {number} */
-          var r = Math.min(width, height) * (.25 * Math.random() + .1);
-          g.clear();
-          g.beginFill(fill);
-          g.drawCircle(0, 0, r);
-          a.play(r, fn);
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var stage = undefined;
-      /** @type {string} */
-      this.id = pluginid;
-      var c = new PIXI.Container;
-      var g = new PIXI.Graphics;
-      stage.addChild(c);
-      c.addChild(g);
-      var a = new Animation(c, g);
-    }, function(angelem, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function itemsToMenu() {
-        /** @type {boolean} */
-        self.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @param {?} headB
-       * @return {undefined}
-       */
-      var YmProcessor = function(headB) {
-        /**
-         * @return {undefined}
-         */
-        function init() {
-          TweenLite.to(obj.scale, .4, {
-            x : 0,
-            y : 0,
-            ease : Back.easeIn.config(2),
-            onComplete : play,
-            delay : .7
-          });
-          TweenLite.to(obj, .4, {
-            rotation : Math.random() * Math.PI * 2,
-            ease : Back.easeIn.config(2),
-            delay : .7
-          });
-        }
-        /**
-         * @return {undefined}
-         */
-        function play() {
-          /** @type {boolean} */
-          obj.visibloe = false;
-          if (_chooseNumber) {
-            _chooseNumber();
-          }
-        }
-        /**
-         * @param {number} a
-         * @param {number} b
-         * @param {number} n
-         * @param {?} color
-         * @return {undefined}
-         */
-        this.init = function(a, b, n, color) {
-          /** @type {number} */
-          _state = 0;
-          /** @type {number} */
-          B = n;
-          fill = color;
-          /** @type {number} */
-          obj.x = a;
-          /** @type {number} */
-          obj.y = b;
-        };
-        /**
-         * @param {number} d
-         * @param {!Function} data
-         * @return {undefined}
-         */
-        this.play = function(d, data) {
-          /** @type {!Function} */
-          _chooseNumber = data;
-          obj.clear();
-          /** @type {boolean} */
-          obj.visibloe = true;
-          obj.beginFill(fill);
-          obj.drawRect(.5 * -B, .5 * -B, B, B);
-          TweenLite.fromTo(obj.scale, .3, {
-            x : 0,
-            y : 0
-          }, {
-            x : 1,
-            y : 1,
-            ease : Back.easeOut.config(1.7),
-            onComplete : init,
-            delay : d
-          });
-          TweenLite.fromTo(obj, .7, {
-            rotation : Math.random() * Math.PI * 2
-          }, {
-            rotation : 0,
-            ease : Elastic.easeOut.config(1, .3),
-            delay : d
-          });
-          /** @type {number} */
-          var rotationDiff = Math.random() * Math.PI;
-          TweenLite.fromTo(self, 1, {
-            rotation : 0
-          }, {
-            rotation : rotationDiff,
-            ease : Bounce.easeOut,
-            delay : d
-          });
-        };
-        var _chooseNumber;
-        var B;
-        var fill;
-        var cacheB = headB;
-        var obj = new PIXI.Graphics;
-        cacheB.addChild(obj);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          parent.setChildIndex(self, parent.children.length - 1);
-          /** @type {boolean} */
-          self.visible = true;
-          /** @type {number} */
-          self.x = width / 2;
-          /** @type {number} */
-          self.y = height / 2;
-          /** @type {number} */
-          var size = Math.floor(8 * Math.random() + 6);
-          /** @type {number} */
-          var a = Math.min(width, height) * (.25 * Math.random() + .25);
-          /** @type {number} */
-          var i = 360 / size;
-          /** @type {number} */
-          var r = a * (.15 * Math.random() + .05);
-          var w = parseInt();
-          /** @type {number} */
-          var fraction = Math.PI / 2 * Math.floor(4 * Math.random());
-          /** @type {number} */
-          var spacing = 1;
-          if (Math.random() < .5) {
-            /** @type {number} */
-            spacing = -1;
-          }
-          /** @type {number} */
-          var j = 0;
-          for (; j < size; j++) {
-            var c;
-            /** @type {number} */
-            var nt = (spacing * i * j + fraction) * Math.PI / 180;
-            /** @type {number} */
-            var temp = a * Math.cos(nt);
-            /** @type {number} */
-            var b = a * Math.sin(nt);
-            c = tmp1[j] ? tmp1[j] : new YmProcessor(self);
-            tmp1[j] = c;
-            /** @type {null} */
-            var type = null;
-            if (j == size - 1) {
-              /** @type {function(): undefined} */
-              type = itemsToMenu;
-            }
-            c.init(temp, b, r, w);
-            c.play(.05 * j, type);
-          }
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var parent = angelem;
-      /** @type {string} */
-      this.id = pluginid;
-      var self = new PIXI.Container;
-      /** @type {!Array} */
-      var tmp1 = [];
-      parent.addChild(self);
-    }, function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function tip() {
-        /** @type {boolean} */
-        c.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @param {?} bruce
-       * @return {undefined}
-       */
-      var YmProcessor = function(bruce) {
-        /**
-         * @return {undefined}
-         */
-        function animate() {
-          /** @type {number} */
-          var offset = .5 * width;
-          /** @type {number} */
-          var audioOffsetX = obj.x + Math.random() * offset - offset / 2;
-          /** @type {number} */
-          var languageOffsetY = obj.y + Math.random() * offset - offset / 2;
-          TweenLite.to(obj.scale, .3, {
-            x : 0,
-            y : 0,
-            ease : Power1.easeOut,
-            onComplete : play,
-            delay : .5
-          });
-          TweenLite.to(obj, .3, {
-            x : audioOffsetX,
-            y : languageOffsetY,
-            ease : Power2.easeOut,
-            delay : .5
-          });
-        }
-        /**
-         * @return {undefined}
-         */
-        function play() {
-          /** @type {boolean} */
-          obj.visibloe = false;
-          if (_chooseNumber) {
-            _chooseNumber();
-          }
-        }
-        /**
-         * @param {number} name
-         * @param {number} a
-         * @param {number} v
-         * @param {?} _
-         * @return {undefined}
-         */
-        this.init = function(name, a, v, _) {
-          /** @type {number} */
-          _state = 0;
-          /** @type {number} */
-          validationVM = v;
-          fill = _;
-          /** @type {number} */
-          obj.x = name;
-          /** @type {number} */
-          obj.y = a;
-        };
-        /**
-         * @param {number} d
-         * @param {!Function} data
-         * @return {undefined}
-         */
-        this.play = function(d, data) {
-          /** @type {!Function} */
-          _chooseNumber = data;
-          obj.clear();
-          /** @type {boolean} */
-          obj.visibloe = true;
-          obj.beginFill(fill);
-          obj.drawCircle(0, 0, .5 * validationVM);
-          TweenLite.fromTo(obj.scale, .3, {
-            x : 0,
-            y : 0
-          }, {
-            x : 1,
-            y : 1,
-            ease : Back.easeOut.config(1.7),
-            onComplete : animate,
-            delay : d
-          });
-        };
-        var _chooseNumber;
-        var validationVM;
-        var fill;
-        var a = bruce;
-        var obj = new PIXI.Graphics;
-        a.addChild(obj);
-      };
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          container.setChildIndex(c, container.children.length - 1);
-          /** @type {boolean} */
-          c.visible = true;
-          /** @type {number} */
-          c.x = width / 2;
-          /** @type {number} */
-          c.y = height / 2;
-          /** @type {number} */
-          var len = Math.floor(8 * Math.random() + 6);
-          /** @type {number} */
-          var a = Math.min(width, height) * (.2 * Math.random() + .25);
-          /** @type {number} */
-          var t = 360 / len;
-          /** @type {number} */
-          var x = a * (.2 * Math.random() + .05);
-          var w = parseInt();
-          /** @type {number} */
-          var fraction = Math.PI / 2 * Math.floor(4 * Math.random());
-          /** @type {number} */
-          var flightTime = 1;
-          if (Math.random() < .5) {
-            /** @type {number} */
-            flightTime = -1;
-          }
-          /** @type {number} */
-          var l = 0;
-          for (; l < len; l++) {
-            var node;
-            /** @type {number} */
-            var nt = (flightTime * t * l + fraction) * Math.PI / 180;
-            /** @type {number} */
-            var temp = a * Math.cos(nt);
-            /** @type {number} */
-            var b = a * Math.sin(nt);
-            node = lg[l] ? lg[l] : new YmProcessor(c);
-            lg[l] = node;
-            /** @type {null} */
-            var entry = null;
-            if (l == len - 1) {
-              /** @type {function(): undefined} */
-              entry = tip;
-            }
-            node.init(temp, b, x, w);
-            node.play(.05 * l, entry);
-          }
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {string} */
-      this.id = pluginid;
-      var c = new PIXI.Container;
-      /** @type {!Array} */
-      var lg = [];
-      container.addChild(c);
-    }, function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function fun() {
-        /** @type {boolean} */
-        parent.visible = false;
-        nodeToOutlets[fromNode.id].push(fromNode);
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          /** @type {boolean} */
-          parent.visible = true;
-          container.setChildIndex(parent, container.children.length - 1);
-          /** @type {number} */
-          parent.x = .2 * width + .6 * width * Math.random();
-          /** @type {number} */
-          parent.y = .2 * height + .6 * height * Math.random();
-          var rotationDiff;
-          /** @type {number} */
-          var pixelSize = Math.min(width, height) * (.7 + .2 * Math.random());
-          /** @type {number} */
-          var r = pixelSize / 10 * (.5 + .8 * Math.random());
-          var fill = parseInt();
-          g.clear();
-          g.beginFill(fill);
-          g.drawRect(0, -r / 2, pixelSize, r);
-          graphics.clear();
-          graphics.beginFill(fill);
-          graphics.drawRect(-r / 2, 0, r, pixelSize);
-          /** @type {number} */
-          g.y = 0;
-          /** @type {number} */
-          g.x = -pixelSize / 2;
-          /** @type {number} */
-          graphics.x = 0;
-          /** @type {number} */
-          graphics.y = -pixelSize / 2;
-          /** @type {number} */
-          parent.rotation = 45 * Math.PI / 180;
-          /** @type {number} */
-          g.scale.x = 0;
-          /** @type {number} */
-          graphics.scale.y = 0;
-          /** @type {number} */
-          rotationDiff = Math.random() < .5 ? -135 * Math.PI / 180 : 215 * Math.PI / 180;
-          (new TimelineLite).to(g.scale, .4, {
-            x : 1,
-            ease : Power2.easeOut
-          }).to(graphics.scale, .4, {
-            y : 1,
-            ease : Power2.easeOut
-          }, .1).to(parent, .6, {
-            rotation : rotationDiff,
-            ease : Back.easeOut.config(1.7)
-          }, 0).to(g.scale, .3, {
-            x : 0,
-            ease : Power2.easeOut
-          }).to(graphics.scale, .3, {
-            y : 0,
-            ease : Power2.easeOut,
-            onComplete : fun
-          }, .6);
-        }();
-      };
-      var fromNode = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {string} */
-      this.id = pluginid;
-      var parent = new PIXI.Container;
-      var g = new PIXI.Graphics;
-      var graphics = new PIXI.Graphics;
-      container.addChild(parent);
-      parent.addChild(g);
-      parent.addChild(graphics);
-    }, function(context, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function animate() {
-        if (total < ++k) {
-          switch(stride) {
-            case 0:
-              /** @type {number} */
-              stride = 1;
-              var n = nodes[0];
-              p.x = n.x;
-              p.y = n.y;
-              /** @type {number} */
-              k = 0;
-              animate();
-              break;
-            case 1:
-              /** @type {number} */
-              stride = 2;
-          }
-        } else {
-          TweenLite.to(p, .1, {
-            x : nodes[k].x,
-            y : nodes[k].y,
-            onComplete : animate,
-            onUpdate : _createBodyPrimitive,
-            ease : Power1.easeOut
-          });
-        }
-      }
-      /**
-       * @return {undefined}
-       */
-      function _createBodyPrimitive() {
-        switch(self.clear(), self.lineStyle(lineWidth, color, 1), stride) {
-          case 0:
-            self.moveTo(nodes[0].x, nodes[0].y);
-            /** @type {number} */
-            var j = 1;
-            for (; j < k; j++) {
-              self.lineTo(nodes[j].x, nodes[j].y);
-            }
-            self.lineTo(p.x, p.y);
+            aidn.window.addDummyDiv();
+            try {
+                aidn.adv.show()
+            } catch (n) {}
+            var n = 1;
+            2 <= window.devicePixelRatio && (n = 2);
+            (I = PIXI.autoDetectRenderer(G, A, {
+                backgroundColor: 16756655,
+                antialias: !1,
+                resolution: n
+            })).autoResize = !0,
+            document.getElementById("view").appendChild(I.view),
+            z = new PIXI.Container,
+            g.init(),
+            a(),
+            $("#scene_top").fadeIn(300),
+            r()
+        }()
+    }
+    ;
+    for (var l = 0, s = 6e4 / 280, d = Math.floor(32 * Math.random()), h = 0, c = [], f = 0, u = 0; u < 32; u++)
+        c[u] = u;
+    function v() {
+        p || S || (S = !0,
+        $("#bt_back").stop().fadeIn(200, "linear"),
+        B && $("#bt_fs").stop().fadeIn(200, "linear"),
+        $("#scene_main .set").stop().fadeIn(200, "linear"))
+    }
+    var p = !1;
+    1 == aidn.util.getQuery().auto && (p = !0),
+    aidn.util.needExpandArea(!0);
+    var B = aidn.util.enabledFullscreen();
+    B && ($("#bt_fs").css("display", "block"),
+    $("#bt_fs").click(function(n) {
+        aidn.util.fullscreen()
+    })),
+    $("#bt_about a").click(function(n) {
+        $("#scene_top").stop().fadeOut(200, "linear"),
+        $("#scene_loading").stop().fadeIn(200, "linear"),
+        2 == b ? i() : ((new aidn.WebAudio).load(""),
+        C.init(t, e));
+        try {
+            aidn.adv.hide()
+        } catch (n) {}
+        n.preventDefault()
+    }),
+    $("#bt_about a").click(function(n) {
+        $("#about").stop().fadeIn(200, "linear"),
+        $("#about_cover").stop().fadeIn(200, "linear"),
+        n.preventDefault()
+    }),
+    $("#bt_close,#about_cover").click(function() {
+        $("#about").stop().fadeOut(200, "linear"),
+        $("#about_cover").stop().fadeOut(200, "linear")
+    }),
+    $("#bt_back").click(function() {
+        switch (x) {
+        case 1:
+            x = 0;
+            try {
+                aidn.adv.show()
+            } catch (n) {}
+            g.end(),
+            C.end(),
+            $("#scene_top").stop().fadeIn(100, "linear"),
+            $("#scene_loading").stop().fadeOut(100, "linear"),
+            $("#scene_main").stop().fadeOut(100, "linear"),
+            v();
             break;
-          case 1:
-            self.moveTo(p.x, p.y);
-            j = k;
-            for (; j <= total; j++) {
-              self.lineTo(nodes[j].x, nodes[j].y);
-            }
+        default:
+            location.href = "../contents/"
         }
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          self.clear();
-          /** @type {boolean} */
-          self.visible = true;
-          if (Math.random() < .5) {
-            /** @type {number} */
-            self.x = 0;
-            /** @type {number} */
-            self.y = 0;
-            /** @type {number} */
-            self.rotation = 0;
-          } else {
-            self.x = width;
-            self.y = height;
-            /** @type {number} */
-            self.rotation = Math.PI;
-          }
-          /** @type {number} */
-          k = stride = 0;
-          /** @type {number} */
-          total = Math.floor(3 * Math.random()) + 3;
-          /** @type {number} */
-          lineWidth = 20 * Math.random() + 2;
-          color = parseInt();
-          var bSize;
-          /** @type {boolean} */
-          var first = Math.random() < .5;
-          /** @type {number} */
-          bSize = first ? width / total : height / total;
-          /** @type {number} */
-          var i = 0;
-          for (; i <= total; i++) {
-            var end;
-            if (first) {
-              end = {
-                x : i * bSize,
-                y : height * Math.random()
-              };
-              if (0 == i) {
-                end.x -= 10;
-              }
-              if (i == total) {
-                end.x += 10;
-              }
-            } else {
-              end = {
-                y : i * bSize,
-                x : width * Math.random()
-              };
-              if (0 == i) {
-                end.y -= 10;
-              }
-              if (i == total) {
-                end.y += 10;
-              }
-            }
-            nodes[i] = end;
-          }
-          var n = nodes[0];
-          p.x = n.x;
-          p.y = n.y;
-          animate();
-        }();
-      };
-      var cur = context;
-      /** @type {string} */
-      this.id = pluginid;
-      var total;
-      var stride;
-      var lineWidth;
-      var color;
-      /** @type {!Array} */
-      var nodes = [];
-      /** @type {number} */
-      var k = 0;
-      var p = {
-        x : 0,
-        y : 0
-      };
-      var self = new PIXI.Graphics;
-      cur.addChild(self);
-    }, createButton];
-    /** @type {!Array} */
-    var h1Words = [function(p, pluginid) {
-      /**
-       * @return {undefined}
-       */
-      function init() {
-        g.clear();
-        g.beginFill(color);
-        g.moveTo(self.pos.b1.x, self.pos.b1.y);
-        g.lineTo(self.pos.b0.x, self.pos.b0.y);
-        /** @type {number} */
-        var offset = 0;
-        for (; self.pos["p" + offset]; offset++) {
-          var p2 = self.pos["p" + offset];
-          g.lineTo(p2.x, p2.y);
-        }
-        g.endFill();
-      }
-      /**
-       * @return {undefined}
-       */
-      function callback() {
-        if (_turnType == turnType) {
-          input.setColor(color, index - 1);
-        }
-        /** @type {boolean} */
-        g.visible = false;
-        nodeToOutlets[self.id].push(self);
-      }
-      /**
-       * @return {undefined}
-       */
-      this.play = function() {
-        !function() {
-          /** @type {number} */
-          _turnType = turnType;
-          var j = toString();
-          color = indices[j];
-          $("#about").css("background-color", "#" + color.toString(16));
-          if (Math.random() < .3) {
-            input.flash(index);
-          }
-          x = j;
-          g.clear();
-          /** @type {boolean} */
-          g.visible = true;
-          /** @type {number} */
-          index = container.children.length - 1 - Math.floor(2 * Math.random());
-          container.setChildIndex(g, index);
-          /** @type {boolean} */
-          var v = Math.random() < .5;
-          /** @type {number} */
-          var b = Math.floor(4 * Math.random()) + 1;
-          self.pos = {};
-          /** @type {number} */
-          var y = 0;
-          if (v) {
-            /** @type {number} */
-            y = height / b;
-            self.pos.b0 = {
-              x : 0,
-              y : 0
-            };
-            self.pos.b1 = {
-              x : 0,
-              y : height
-            };
-          } else {
-            /** @type {number} */
-            y = width / b;
-            self.pos.b0 = {
-              x : 0,
-              y : 0
-            };
-            self.pos.b1 = {
-              x : width,
-              y : 0
-            };
-          }
-          if (Math.random() < .5) {
-            /** @type {number} */
-            g.rotation = 0;
-            /** @type {number} */
-            g.x = 0;
-            /** @type {number} */
-            g.y = 0;
-          } else {
-            /** @type {number} */
-            g.rotation = Math.PI;
-            g.x = width;
-            g.y = height;
-          }
-          /** @type {number} */
-          var a = duration = 0;
-          for (; a <= b; a++) {
-            var layout = {
-              x : 0,
-              y : 0
-            };
-            /** @type {number} */
-            var yOffset = 0;
-            if (0 != a && a != b) {
-              /** @type {number} */
-              yOffset = y / 4 * Math.random() - y / 8;
-            }
-            if (v) {
-              /** @type {number} */
-              layout.y = y * a + yOffset;
-            } else {
-              /** @type {number} */
-              layout.x = y * a + yOffset;
-            }
-            self.pos["p" + a] = layout;
-            var pt;
-            /** @type {number} */
-            var TIME = .4 * Math.random() + .3;
-            /** @type {number} */
-            duration = 2;
-            /** @type {({x: ?}|{y: ?})} */
-            pt = v ? {
-              x : width
-            } : {
-              y : height
-            };
-            TweenLite.to(self.pos["p" + a], TIME, pt);
-          }
-          /** @type {number} */
-          self.progress = 0;
-          TweenLite.to(self, duration, {
-            progress : 1,
-            ease : Power0.easeNone,
-            onUpdate : init,
-            onComplete : callback
-          });
-        }();
-      };
-      var color;
-      var duration;
-      var self = this;
-      /** @type {!Object} */
-      var container = p;
-      /** @type {number} */
-      this.id = pluginid;
-      /** @type {number} */
-      this.progress = 0;
-      this.pos = {};
-      /** @type {number} */
-      var index = 0;
-      var g = new PIXI.Graphics;
-      container.addChild(g);
-      /** @type {number} */
-      var turnType = Math.floor(aidn.util.getTime());
-    }];
-    aidn.util.shuffleArray(titleWords);
-    var canvas;
-    /** @type {number} */
-    var t = 16 * Math.random();
-    /** @type {!Array} */
-    var nodeToOutlets = [];
-    /** @type {number} */
-    var nodeId = 0;
-    for (; nodeId < titleWords.length + h1Words.length; nodeId++) {
-      /** @type {!Array} */
-      nodeToOutlets[nodeId] = [];
-    }
-    var input;
-    /** @type {!Array} */
-    var indices = [13430510, 8965324, 9099756, 961181, 1089457, 34969, 13934238, 16110792, 15488645, 16531063, 5853015, 3222317];
-    /** @type {!Array} */
-    var format = [13430510, 8965324, 9099756, 961181, 1089457, 34969, 13934238, 16110792, 15488645, 16531063, 5853015, 3222317];
-    /** @type {number} */
-    var length = indices.length;
-    /** @type {number} */
-    var x = 0;
-    /** @type {number} */
-    var _turnType = 0;
-  };
-  /** @type {boolean} */
-  var isVirtual = false;
-  /** @type {number} */
-  var D = 0;
-  /** @type {boolean} */
-  var U = "off" == aidn.util.getCookie("fb");
-  /** @type {boolean} */
-  var T = "off" == aidn.util.getCookie("bt");
-  create();
-  register();
-  if (aidn.util.webaudio) {
-    $("#ng").css("display", "none");
-    $(".ok").css("display", "block");
-    if (currentRoot) {
-      $("#scene_main .attention").html("TOUCH &amp; SWIPE!");
-    }
-    if (!arraynames) {
-      $("#scene_top .attention").text("* Raise the volume and enjoy!");
-    }
-  } else {
-    $("#ng").css("display", "block");
-    $(".ok").css("display", "none");
-    if (!arraynames) {
-      $("#ng .atten").html("Sorry,<br>your device or browser doesn't support this site.");
-    }
-  }
-  /** @type {boolean} */
-  PIXI.utils._saidHello = true;
-  aidn.window.resize(resizeInput);
-};
-/**
- * @return {undefined}
- */
-var WebAudioManager = function() {
-  /**
-   * @return {undefined}
-   */
-  function next() {
-    if (i++, t.now = i, s && s(i, m), m <= i) {
-      if (currentPage) {
-        currentPage();
-      }
-    } else {
-      var a = new aidn.WebAudio;
-      a.load(args[keys[i]], next);
-      instances[i] = a;
-    }
-  }
-  /**
-   * @param {string} jsonUrl
-   * @param {(!Function|string)} args
-   * @param {!Function} n
-   * @param {!Function} r
-   * @return {undefined}
-   */
-  this.load = function(jsonUrl, args, n, r) {
-    /** @type {!Function} */
-    currentPage = n;
-    /** @type {!Function} */
-    s = r;
-    m = (keys = args).length;
-    t.length = m;
-    $.getJSON(jsonUrl, function(value) {
-      args = value;
-      next();
+    }),
+    $("#bt_feedback a").click(n),
+    $("#bt_backtrack a").click(o);
+    var G, A, y = aidn.util.checkJapanese(), E = aidn.util.checkMobile(), w = "https://aidn.jp/mikutap/", M = "Mikutap";
+    M += y ? ",初音ミク10周年" : ",Miku10th",
+    $("#bt_tw").click(function(n) {
+        var a = document.title;
+        aidn.social.shareTw(w, !0, a, "daniwell_aidn", M)
+    }),
+    $("#bt_fb").click(function(n) {
+        aidn.social.shareFb(w, !0)
+    }),
+    $("#bt_gp").click(function(n) {
+        aidn.social.shareGp(w, !0)
     });
-  };
-  /**
-   * @param {number} t
-   * @param {!Function} data
-   * @param {number} end
-   * @return {undefined}
-   */
-  this.play = function(t, data, end) {
-    if (!(0 <= end)) {
-      /** @type {number} */
-      end = 1;
+    var m, I, z, b = 0, x = 0, C = new function() {
+        function t() {
+            c && c()
+        }
+        function i(n, a) {
+            f && f(n, a)
+        }
+        var r;
+        this.init = function(n, a) {
+            f = a,
+            function(n) {
+                c = n;
+                for (var a = [], e = 0; e < o; e++)
+                    if (e != 1) {
+                        a[e] = [e + ".mp3"];
+                    }else {
+                        a[e] = [0 + ".mp3"];
+
+                    }
+                (r = new WebAudioManager).load("data/track/track.json", a, t, i)
+            }(n)
+        }
+        ,
+        this.update = function() {
+            !function() {
+                if (l) {
+                    var n = 1e3 * (aidn.___waContext.currentTime - m);
+                    if (v * p < n) {
+                        var a = (v = Math.floor(n / p) + 1) * p - n;
+                        if (0 <= a) {
+                            if (!T)
+                                return;
+                            for (var e = (v - 1) % u, t = d.length, i = 0; i < t; i++) {
+                                var o = d[i][e];
+                                0 <= o && r.play(o, a / 1e3, s[o])
+                            }
+                        }
+                    }
+                }
+            }()
+        }
+        ,
+        this.start = function() {
+            l = !0,
+            v = 0
+        }
+        ;
+        this.end = function() {
+            l = !1,
+            v = 0
+        }
+        ;
+        var l = !1
+          , o = 11;
+        this.length = o;
+        for (var s = [], n = 0; n < o; n++)
+            s[n] = 1.2;
+        s[1] *= .6;
+        var d = [[0, 1, 2, 1], []]
+          , a = "";
+        a += "3443443443443434",
+        a += "5665665665665656",
+        a += "7887887887887878";
+        var e = (a += "9119119119119191").length;
+        for (n = 0; n < e; n++) {
+            var h = parseInt(a.charAt(n));
+            1 == h && (h = 10),
+            d[1][n] = h,
+            4 <= n && (d[0][n] = d[0][n % 4])
+        }
+        var c, f, u = d[0].length, v = 0, p = 6e4 / 280
     }
-    if (t < m) {
-      instances[t].play(0, false, null, 0, end, data);
+    , R = new function() {
+        var o, r = -1, l = -1;
+        function t() {
+            c && c()
+        }
+        function i(n, a) {
+            e && e(n, a)
+        }
+        this.init = function(n, a) {
+            e = a,
+            function(n) {
+                c = n;
+                for (var a = [], e = 0; e < s; e++)
+                    a[e] = [e + ".mp3"];
+                (o = new WebAudioManager).load("data/main/main.json", a, t, i)
+            }(n)
+        }
+        ;
+        this.play = function(n, a) {
+            var e = 1e3 * (aidn.___waContext.currentTime + h[n] - m)
+              , t = Math.floor(e / f);
+            t == r && 0 <= l && o.stop(l),
+            r = t,
+            l = n;
+            var i = f - e % f;
+            o.play(n, i / 1e3, d[n])
+        }
+        ;
+        var s = 32;
+        this.length = s;
+        for (var d = [], h = [], n = 0; n < s; n++)
+            d[n] = 1,
+            h[n] = .05;
+        for (h[6] = .08,
+        h[20] = .1,
+        h[23] = .1,
+        d[1] = 1.3,
+        d[2] = 1.6,
+        d[3] = 1.35,
+        d[5] = 1.7,
+        d[9] = .8,
+        d[17] = .8,
+        d[22] = .9,
+        d[25] = .7,
+        d[29] = 1.2,
+        n = 0; n < s; n++)
+            d[n] *= 1.2;
+        var c, e, f = 6e4 / 280
     }
-  };
-  /**
-   * @param {number} n
-   * @return {undefined}
-   */
-  this.stop = function(n) {
-    if (n < m) {
-      instances[n].stop();
+    , g = new function() {
+        var s = function(n, a) {
+            this.id = n,
+            this.setPosition = function(n, a) {
+                r.position.x = e = n,
+                r.position.y = t = a
+            }
+            ,
+            this.setSize = function(n, a) {
+                i = n,
+                o = a,
+                r.clear(),
+                r.beginFill(16777215),
+                r.alpha = 0,
+                r.drawRect(0, 0, i, o)
+            }
+            ,
+            this.play = function() {
+                U && TweenLite.fromTo(r, .5, {
+                    alpha: .7
+                }, {
+                    alpha: 0,
+                    ease: Power0.easeNon
+                })
+            }
+            ,
+            this.hitcheck = function(n, a) {
+                return e <= n && n < e + i && t <= a && a < t + o
+            }
+            ;
+            var e = 0
+              , t = 0
+              , i = 0
+              , o = 0
+              , r = new PIXI.Graphics;
+            r.interactive = !0,
+            a.addChild(r)
+        }
+          , n = function(n) {
+            function a() {
+                o.clear(),
+                o.beginFill(16777215),
+                o.drawRect(0, 0, G, A)
+            }
+            function e() {
+                t.resize()
+            }
+            this.resize = function() {
+                o.clear(),
+                o.beginFill(i),
+                o.drawRect(0, 0, G, A)
+            }
+            ,
+            this.flash = function() {
+                r.setChildIndex(o, r.children.length - 1);
+                for (var n = 0; n < 3; n += 2)
+                    TweenLite.delayedCall(.07 * n, a),
+                    TweenLite.delayedCall(.07 * (n + 1), e)
+            }
+            ,
+            this.setColor = function(n, a) {
+                i = n,
+                a = 0 <= a ? a : 0,
+                r.setChildIndex(o, a),
+                t.resize()
+            }
+            ;
+            var t = this
+              , i = 16777215
+              , o = new PIXI.Graphics
+              , r = n;
+            r.addChild(o)
+        }
+          , d = function(n, a) {
+            function e() {
+                var n, a, e, t = 1.3 * d;
+                if (f.clear(),
+                f.beginFill(0),
+                f.moveTo(0, 0),
+                0 == o)
+                    for (var i = 0; i < c.rotation; i += 30)
+                        n = (s * i + l) * Math.PI / 180,
+                        a = Math.cos(n) * t,
+                        e = Math.sin(n) * t,
+                        f.lineTo(a, e);
+                else
+                    for (i = 360; c.rotation < i; i -= 30)
+                        n = (s * i + l) * Math.PI / 180,
+                        a = Math.cos(n) * t,
+                        e = Math.sin(n) * t,
+                        f.lineTo(a, e);
+                n = (s * c.rotation + l) * Math.PI / 180,
+                a = Math.cos(n) * t,
+                e = Math.sin(n) * t,
+                f.lineTo(a, e),
+                f.lineTo(0, 0),
+                f.endFill()
+            }
+            function t() {
+                o = 1,
+                TweenLite.fromTo(c, .9, {
+                    rotation: 0
+                }, {
+                    rotation: 360,
+                    ease: Power1.easeOut,
+                    onUpdate: e,
+                    onComplete: i
+                })
+            }
+            function i() {
+                r && r()
+            }
+            this.play = function(n, a) {
+                o = 0,
+                d = n,
+                r = a,
+                l = 360 * Math.random(),
+                s = 1,
+                Math.random() < .5 && (s = -1),
+                f.clear(),
+                f.beginFill(0),
+                f.moveTo(0, 0),
+                f.lineTo(1, 1),
+                f.endFill(),
+                TweenLite.fromTo(c, .6, {
+                    rotation: 0
+                }, {
+                    rotation: 360,
+                    ease: Power1.easeOut,
+                    onUpdate: e,
+                    onComplete: t
+                })
+            }
+            ;
+            var o, r, l, s, d, h = n, c = {
+                rotation: 0
+            }, f = new PIXI.Graphics;
+            h.addChild(f),
+            a.mask = f
+        }
+          , r = function(n) {
+            function h() {
+                w.clear(),
+                0 == f ? w.lineStyle(v, u) : w.beginFill(u);
+                for (var n = 0; n < p; n++) {
+                    var a = M["p" + n].x
+                      , e = M["p" + n].y;
+                    0 == n ? w.moveTo(a, e) : w.lineTo(a, e)
+                }
+                a = M.p0.x,
+                e = M.p0.y,
+                w.lineTo(a, e)
+            }
+            function c() {
+                w.visible = !1,
+                e && e()
+            }
+            this.play = function(n, a) {
+                f = n,
+                e = a,
+                function() {
+                    y.setChildIndex(w, y.children.length - 1),
+                    w.visible = !0,
+                    w.x = G / 2,
+                    w.y = A / 2,
+                    u = L();
+                    var n, a = Math.min(G, A) * (.32 * Math.random() + .16), e = Math.floor(5 * Math.random()) + 3;
+                    p = e,
+                    v = 5 * Math.random() + 3,
+                    w.clear(),
+                    w.rotation = 30 * Math.floor(6 * Math.random()),
+                    M = {},
+                    n = 0 == f ? 3 : 2.5;
+                    for (var t = 360 / p, i = 0; i < p; i++) {
+                        var o = i * t * Math.PI / 180
+                          , r = a * Math.cos(o)
+                          , l = a * Math.sin(o)
+                          , s = r + a * (Math.random() - .5) * n
+                          , d = l + a * (Math.random() - .5) * n;
+                        M["p" + i] = {
+                            x: r,
+                            y: l
+                        },
+                        TweenLite.to(M["p" + i], .6, {
+                            x: s,
+                            y: d
+                        })
+                    }
+                    M.progress = 0,
+                    TweenLite.to(M, .8, {
+                        progress: 1,
+                        onUpdate: h,
+                        onComplete: c
+                    })
+                }()
+            }
+            ;
+            var e, f, u, v, p, y = n, w = new PIXI.Graphics;
+            y.addChild(w);
+            var M = {}
+        }
+          , t = function(n, a) {
+            var f = function(n) {
+                function i() {
+                    v.clear(),
+                    v.lineStyle(d, h),
+                    v.moveTo(s.x, s.y),
+                    0 == u ? v.lineTo(r.x, r.y) : v.lineTo(l.x, l.y)
+                }
+                function o() {
+                    0 == u ? (u = 1,
+                    s = {
+                        x: r.x,
+                        y: r.y
+                    },
+                    TweenLite.to(s, f, {
+                        x: l.x,
+                        y: l.y,
+                        ease: Power1.easeOut,
+                        onUpdate: i,
+                        onComplete: o
+                    })) : (v.clear(),
+                    v.visible = !1)
+                }
+                this.play = function(n, a, e, t) {
+                    return v.visible = !0,
+                    u = 0,
+                    r = n,
+                    l = a,
+                    d = e,
+                    h = t,
+                    c = .2 * Math.random() + .2,
+                    f = .2 * Math.random() + .2,
+                    s = {
+                        x: r.x,
+                        y: r.y
+                    },
+                    TweenLite.to(s, c, {
+                        x: l.x,
+                        y: l.y,
+                        ease: Power1.easeOut,
+                        onUpdate: i,
+                        onComplete: o
+                    }),
+                    c + f
+                }
+                ;
+                var r, l, s, d, h, c, f, u, a = n, v = new PIXI.Graphics;
+                a.addChild(v)
+            };
+            function u() {
+                y.visible = !1,
+                0 <= v.id && C[v.id].push(v),
+                e && e()
+            }
+            this.play = function(n) {
+                e = n,
+                function() {
+                    p.setChildIndex(y, p.children.length - 1),
+                    y.visible = !0,
+                    y.x = G / 2,
+                    y.y = A / 2,
+                    y.rotation = .5 * Math.PI * Math.floor(4 * Math.random());
+                    for (var n, a = Math.floor(7 * Math.random() + 2), e = .8 * Math.min(G, A), t = (v.size = e) / a * (.4 * Math.random() + .7), i = e / a * (.4 * Math.random() + .1), o = L(), r = 0, l = 0; l <= a; l++) {
+                        var s = (l - .5 * a) * t
+                          , d = {
+                            x: -e / 2,
+                            y: s
+                        }
+                          , h = {
+                            x: e / 2,
+                            y: s
+                        }
+                          , c = (n = w[l] ? w[l] : new f(y)).play(d, h, i, o);
+                        r < c && (r = c),
+                        w[l] = n
+                    }
+                    TweenLite.delayedCall(r, u)
+                }()
+            }
+            ;
+            var v = this
+              , p = n;
+            this.id = a;
+            var e, y = new PIXI.Container, w = [];
+            this.size = 0,
+            this.container = y,
+            p.addChild(y)
+        };
+        function l(n, a) {
+            for (var e = M.length, t = 0; t < e; t++) {
+                var i = M[t];
+                if (i.hitcheck(n, a))
+                    return u != i.id && i.play(),
+                    i.id
+            }
+            return !1
+        }
+        function a(n) {
+            c(65 <= n.keyCode ? n.keyCode - 55 : 48 <= n.keyCode ? n.keyCode - 48 : n.keyCode)
+        }
+        function e(n) {
+            c(-1)
+        }
+        function i(n) {
+            y = !0;
+            var a = aidn.event.getPos(n)
+              , e = l(a.x, a.y);
+            if (c(e),
+            n.originalEvent && n.originalEvent.touches)
+                for (var t = n.originalEvent.touches.length, i = 1; i < t; i++) {
+                    var o = n.originalEvent.touches[i];
+                    c(e = l(o.pageX, o.pageY), 1)
+                }
+        }
+        function o(n) {
+            if (y) {
+                var a = aidn.event.getPos(n);
+                c(l(a.x, a.y), 0, !0)
+            }
+            n.preventDefault()
+        }
+        function h(n) {
+            y && (c(-1),
+            y = !1)
+        }
+        function c(n, a, e) {
+            var t, i;
+            u != n && (1 != a && (u = n),
+            u < 0 || (R.play(n % R.length, e),
+            D = 90,
+            S && (S = !1,
+            $("#bt_back").stop().fadeOut(200, "linear"),
+            B && $("#bt_fs").stop().fadeOut(200, "linear"),
+            $("#scene_main .set").stop().fadeOut(200, "linear")),
+            --x <= 0 && (i = (t = Math.floor(I.length * Math.random())) + m.length,
+            (C[i].length ? C[i].pop() : new I[t](b,i)).play(),
+            x = 12 * Math.random() + 6),
+            t = n % m.length,
+            (0 < C[t].length ? C[t].pop() : new m[t](b,t)).play()))
+        }
+        this.resize = function() {
+            if (w) {
+                var n = 0
+                  , a = v
+                  , e = p;
+                A < G && (a = p,
+                e = v);
+                for (var t = G / a, i = A / e, o = 0; o < e; o++)
+                    for (var r = 0; r < a; r++) {
+                        var l;
+                        M[n] ? l = M[n] : (l = new s(n,f),
+                        M[n] = l),
+                        l.setPosition(t * r, i * o),
+                        l.setSize(t, i),
+                        n++
+                    }
+                T.resize()
+            }
+        }
+        ,
+        this.init = function() {
+            w = !0,
+            b = new PIXI.Container,
+            z.addChild(b),
+            f = new PIXI.Container,
+            z.addChild(f),
+            (T = new n(b)).setColor(8965324, 0)
+        }
+        ,
+        this.start = function() {
+            E || ($("#view").on("mousedown", i),
+            $(window).on("mousemove", o),
+            $(window).on("mouseup", h),
+            $(window).on("keydown", a),
+            $(window).on("keyup", e)),
+            (E || window.TouchEvent) && ($("#view").on("touchstart", i),
+            $(window).on("touchmove", o),
+            $(window).on("touchend", h)),
+            $("#view").css("cursor", "pointer")
+        }
+        ,
+        this.end = function() {
+            E || ($("#view").off("mousedown", i),
+            $(window).off("mousemove", o),
+            $(window).off("mouseup", h),
+            $(window).off("keydown", a),
+            $(window).off("keyup", e)),
+            (E || window.TouchEvent) && ($("#view").off("touchstart", i),
+            $(window).off("touchmove", o),
+            $(window).off("touchend", h)),
+            $("#view").css("cursor", "auto")
+        }
+        ,
+        this.changeId = function(n, a, e) {
+            c(n, a, e)
+        }
+        ;
+        var f, u = -1, v = 4, p = 8, y = !1, w = !1, M = [], m = [function(n, a) {
+            var s = function(n) {
+                function l() {
+                    s.visible = !1
+                }
+                this.play = function(n, a, e) {
+                    s.visible = !0,
+                    s.clear();
+                    var t = G * Math.random()
+                      , i = A * Math.random()
+                      , o = Math.min(G, A) * (.03 * Math.random() + .02);
+                    s.lineStyle(3 * Math.random() + 3, e),
+                    s.drawCircle(0, 0, o),
+                    s.x = n,
+                    s.y = a,
+                    s.scale.x = 0,
+                    s.scale.y = 0,
+                    s.rotation = Math.random() * Math.PI;
+                    var r = .2 * Math.random() + .4;
+                    return TweenLite.to(s, r, {
+                        x: t,
+                        y: i,
+                        rotation: Math.random() * Math.PI,
+                        ease: Power3.easeOut,
+                        onComplete: l
+                    }),
+                    TweenLite.to(s.scale, r, {
+                        x: 1,
+                        y: 1,
+                        ease: Back.easeOut.config(1.7)
+                    }),
+                    r
+                }
+                ;
+                var a = n
+                  , s = new PIXI.Graphics;
+                a.addChild(s)
+            };
+            function d() {
+                f.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    h.setChildIndex(f, h.children.length - 1),
+                    f.visible = !0;
+                    for (var n = 5 * Math.random() + 7, a = 0, e = G / 2, t = A / 2, i = L(), o = 0; o < n; o++) {
+                        var r;
+                        r = c[o] ? c[o] : new s(f);
+                        var l = (c[o] = r).play(e, t, i);
+                        a < l && (a = l)
+                    }
+                    TweenLite.delayedCall(a, d)
+                }()
+            }
+            ;
+            var e = this
+              , h = n;
+            this.id = a;
+            var c = []
+              , f = new PIXI.Container;
+            h.addChild(f)
+        }
+        , function(n, a) {
+            var s = function(n) {
+                function l() {
+                    s.visible = !1
+                }
+                this.play = function(n, a, e) {
+                    s.visible = !0,
+                    s.clear();
+                    var t = G * Math.random()
+                      , i = A * Math.random()
+                      , o = Math.min(G, A) * (.04 * Math.random() + .02);
+                    s.beginFill(e),
+                    s.drawRect(-o / 2, -o / 2, o, o),
+                    s.x = n,
+                    s.y = a,
+                    s.scale.x = 0,
+                    s.scale.y = 0,
+                    s.rotation = Math.random() * Math.PI;
+                    var r = .2 * Math.random() + .4;
+                    return TweenLite.to(s, r, {
+                        x: t,
+                        y: i,
+                        rotation: Math.random() * Math.PI,
+                        ease: Power3.easeOut,
+                        onComplete: l
+                    }),
+                    TweenLite.to(s.scale, r, {
+                        x: 1,
+                        y: 1,
+                        ease: Back.easeOut.config(1.7)
+                    }),
+                    r
+                }
+                ;
+                var a = n
+                  , s = new PIXI.Graphics;
+                a.addChild(s)
+            };
+            function d() {
+                f.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    h.setChildIndex(f, h.children.length - 1),
+                    f.visible = !0;
+                    for (var n = 5 * Math.random() + 7, a = 0, e = G / 2, t = A / 2, i = L(), o = 0; o < n; o++) {
+                        var r;
+                        r = c[o] ? c[o] : new s(f);
+                        var l = (c[o] = r).play(e, t, i);
+                        a < l && (a = l)
+                    }
+                    TweenLite.delayedCall(a, d)
+                }()
+            }
+            ;
+            var e = this
+              , h = n;
+            this.id = a;
+            var c = []
+              , f = new PIXI.Container;
+            h.addChild(f)
+        }
+        , function(n, a) {
+            var h = function(n) {
+                function r() {
+                    h.beginFill(l),
+                    h.drawCircle(0, 0, s),
+                    h.scale.x = 0,
+                    h.scale.y = 0,
+                    TweenLite.to(h.scale, .7, {
+                        x: 1,
+                        y: 1,
+                        ease: Elastic.easeOut.config(1, .3),
+                        onComplete: a
+                    })
+                }
+                function a() {
+                    TweenLite.to(h.scale, .4, {
+                        x: 0,
+                        y: 0,
+                        ease: Power2.easeOut,
+                        onComplete: e,
+                        delay: .1
+                    })
+                }
+                function e() {
+                    h.visible = !1,
+                    d && d()
+                }
+                this.play = function(n, a, e, t, i, o) {
+                    h.visible = !0,
+                    h.clear(),
+                    h.x = t,
+                    h.y = i,
+                    l = a,
+                    s = e,
+                    d = o,
+                    TweenLite.delayedCall(n, r)
+                }
+                ;
+                var l, s, d, t = n, h = new PIXI.Graphics;
+                t.addChild(h)
+            };
+            function c() {
+                v.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    f.setChildIndex(v, f.children.length - 1),
+                    v.visible = !0,
+                    v.x = G / 2,
+                    v.y = A / 2,
+                    v.rotation = Math.random() * Math.PI * 2;
+                    for (var n = 10, a = L(), e = Math.min(G, A) / 64 * (.6 * Math.random() + .7), t = 2, i = 0; i < 40; i++) {
+                        var o, r = 25 * i * Math.PI / 180, l = n * Math.cos(r), s = n * Math.sin(r);
+                        n += e,
+                        t += .22,
+                        o = u[i] ? u[i] : new h(v),
+                        u[i] = o;
+                        var d = null;
+                        39 == i && (d = c),
+                        o.play(.03 * i, a, t, l, s, d)
+                    }
+                }()
+            }
+            ;
+            var e = this
+              , f = n;
+            this.id = a;
+            var u = []
+              , v = new PIXI.Container;
+            f.addChild(v)
+        }
+        , function(n, a) {
+            function e() {
+                C[t.id].push(t)
+            }
+            this.play = function() {
+                o.play(0, e)
+            }
+            ;
+            var t = this
+              , i = n;
+            this.id = a;
+            var o = new r(i)
+        }
+        , function(n, a) {
+            function e() {
+                C[t.id].push(t)
+            }
+            this.play = function() {
+                o.play(1, e)
+            }
+            ;
+            var t = this
+              , i = n;
+            this.id = a;
+            var o = new r(i)
+        }
+        , function(n, a) {
+            function h() {
+                f.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    c.setChildIndex(f, c.children.length - 1),
+                    f.visible = !0,
+                    f.x = G / 2,
+                    f.y = A / 2;
+                    var n = L()
+                      , a = Math.min(G, A) * (.28 * Math.random() + .2)
+                      , e = Math.floor(5 * Math.random()) + 3;
+                    u.clear(),
+                    u.lineStyle(7 * Math.random() + 4, n, 1),
+                    u.rotation = 30 * Math.floor(6 * Math.random());
+                    for (var t = 360 / e, i = 0; i <= e; i++) {
+                        var o = i * t * Math.PI / 180
+                          , r = a * Math.cos(o)
+                          , l = a * Math.sin(o);
+                        0 == i ? u.moveTo(r, l) : u.lineTo(r, l)
+                    }
+                    var s = .8 * Math.random() + .4
+                      , d = .8 * Math.random() + .4;
+                    TweenLite.fromTo(u.scale, .9, {
+                        x: s,
+                        y: s
+                    }, {
+                        x: d,
+                        y: d,
+                        ease: Bounce.easeOut
+                    }),
+                    v.play(a, h)
+                }()
+            }
+            ;
+            var e = this
+              , c = n;
+            this.id = a;
+            var f = new PIXI.Container
+              , u = new PIXI.Graphics;
+            c.addChild(f),
+            f.addChild(u);
+            var v = new d(f,u)
+        }
+        , function(n, a) {
+            var i = function(n) {
+                function e() {
+                    var n = Math.min(G, A)
+                      , a = n * (.08 * Math.random() + .05);
+                    l.lineStyle(4 * Math.random() + 4, L()),
+                    l.drawRect(-a / 2, -a / 2, a, a),
+                    l.x = o + n / 2 * (Math.random() - .5),
+                    l.y = r + n / 2 * (Math.random() - .5),
+                    l.scale.x = 0,
+                    l.scale.y = 0,
+                    l.rotation = Math.random() * Math.PI,
+                    TweenLite.to(l, .5, {
+                        x: o,
+                        y: r,
+                        rotation: 0,
+                        ease: Back.easeOut.config(1.7),
+                        onComplete: t
+                    }),
+                    TweenLite.to(l.scale, .5, {
+                        x: 1,
+                        y: 1,
+                        ease: Back.easeOut.config(1.7)
+                    })
+                }
+                function t() {
+                    var n = Math.min(G, A)
+                      , a = o + n / 2 * (Math.random() - .5)
+                      , e = r + n / 2 * (Math.random() - .5);
+                    TweenLite.to(l, .5, {
+                        x: a,
+                        y: e,
+                        rotation: -Math.random() * Math.PI,
+                        ease: Back.easeIn.config(1.7),
+                        onComplete: i,
+                        delay: .2
+                    }),
+                    TweenLite.to(l.scale, .5, {
+                        x: 0,
+                        y: 0,
+                        ease: Back.easeIn.config(1.7),
+                        delay: .2
+                    })
+                }
+                function i() {
+                    l.visible = !1
+                }
+                this.play = function(n, a) {
+                    l.visible = !0,
+                    l.clear(),
+                    o = G * Math.random(),
+                    r = A * Math.random(),
+                    TweenLite.delayedCall(n, e)
+                }
+                ;
+                var o, r, a = n, l = new PIXI.Graphics;
+                a.addChild(l)
+            };
+            function o() {
+                l.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    r.setChildIndex(l, r.children.length - 1),
+                    l.visible = !0;
+                    for (var n = Math.floor(5 * Math.random() + 5), a = 0; a < n; a++) {
+                        var e;
+                        e = s[a] ? s[a] : new i(l),
+                        s[a] = e;
+                        var t = null;
+                        a == n - 1 && (t = o),
+                        e.play(.06 * a, t)
+                    }
+                }()
+            }
+            ;
+            var e = this
+              , r = n;
+            this.id = a;
+            var l = new PIXI.Container;
+            r.addChild(l);
+            var s = []
+        }
+        , function(n, a) {
+            var i = function(n) {
+                function e() {
+                    var n = Math.min(G, A) * (.05 * Math.random() + .014);
+                    l.beginFill(L()),
+                    l.drawCircle(0, 0, n),
+                    l.x = i,
+                    l.y = o,
+                    l.scale.x = 0,
+                    l.scale.y = 0,
+                    TweenLite.to(l.scale, .5, {
+                        x: 1,
+                        y: 1,
+                        ease: Elastic.easeOut.config(1, .3),
+                        onComplete: a
+                    })
+                }
+                function a() {
+                    TweenLite.to(l.scale, .5, {
+                        x: 0,
+                        y: 0,
+                        ease: Back.easeIn.config(1.7),
+                        onComplete: t,
+                        delay: .2
+                    })
+                }
+                function t() {
+                    l.visible = !1
+                }
+                this.play = function(n, a) {
+                    l.visible = !0,
+                    l.clear(),
+                    i = G * Math.random(),
+                    o = A * Math.random(),
+                    TweenLite.delayedCall(n, e)
+                }
+                ;
+                var i, o, r = n, l = new PIXI.Graphics;
+                r.addChild(l)
+            };
+            function o() {
+                l.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    r.setChildIndex(l, r.children.length - 1),
+                    l.visible = !0;
+                    for (var n = Math.floor(5 * Math.random() + 5), a = 0; a < n; a++) {
+                        var e;
+                        e = s[a] ? s[a] : new i(l),
+                        s[a] = e;
+                        var t = null;
+                        a == n - 1 && (t = o),
+                        e.play(.06 * a, t)
+                    }
+                }()
+            }
+            ;
+            var e = this
+              , r = n;
+            this.id = a;
+            var l = new PIXI.Container;
+            r.addChild(l);
+            var s = []
+        }
+        , function(n, a) {
+            function o() {
+                l.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    l.visible = !0,
+                    r.setChildIndex(l, r.children.length - 1),
+                    d.container.mask = s,
+                    d.play(o);
+                    var n = d.size / 2;
+                    s.x = G / 2,
+                    s.y = A / 2,
+                    s.clear(),
+                    s.beginFill(0),
+                    s.drawCircle(0, 0, n);
+                    var a = 45 * Math.PI / 180 * Math.floor(2 * Math.random())
+                      , e = a + 45 * Math.PI / 180 * Math.floor(4 * Math.random() - 2)
+                      , t = .3 * Math.random() + 1
+                      , i = .3 * -Math.random() + 1;
+                    TweenLite.fromTo(d.container, .6, {
+                        rotation: a
+                    }, {
+                        rotation: e,
+                        ease: Power2.easeOut
+                    }),
+                    TweenLite.fromTo(d.container.scale, .6, {
+                        x: t,
+                        y: t
+                    }, {
+                        x: i,
+                        y: i,
+                        ease: Back.easeOut.config(1.7)
+                    }),
+                    TweenLite.fromTo(s.scale, .6, {
+                        x: t,
+                        y: t
+                    }, {
+                        x: i,
+                        y: i,
+                        ease: Back.easeOut.config(1.7)
+                    })
+                }()
+            }
+            ;
+            var e = this
+              , r = n;
+            this.id = a;
+            var l = new PIXI.Container;
+            r.addChild(l);
+            var s = new PIXI.Graphics;
+            l.addChild(s);
+            var d = new t(l,-1)
+        }
+        , function(n, a) {
+            function d() {
+                c.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    h.setChildIndex(c, h.children.length - 1),
+                    c.clear(),
+                    c.visible = !0,
+                    c.lineStyle(5 * Math.random() + 3, L(), 1),
+                    c.x = G / 2,
+                    c.y = A / 2;
+                    for (var n = .6 * Math.min(G, A), a = Math.floor(5 * Math.random()) + 3, e = 360 / a, t = .5 * Math.max(G, A) / n * (1.6 + .6 / a), i = 0; i <= a; i++) {
+                        var o = i * e * Math.PI / 180
+                          , r = n * Math.cos(o)
+                          , l = n * Math.sin(o);
+                        0 == i ? c.moveTo(r, l) : c.lineTo(r, l)
+                    }
+                    var s = .3 * Math.random() + .6;
+                    TweenLite.fromTo(c.scale, s, {
+                        x: 0,
+                        y: 0
+                    }, {
+                        x: t,
+                        y: t,
+                        onComplete: d,
+                        ease: Power2.easeOut
+                    }),
+                    TweenLite.fromTo(c, s, {
+                        rotation: Math.random() * Math.PI
+                    }, {
+                        rotation: Math.random() * Math.PI,
+                        ease: Power1.easeOut
+                    })
+                }()
+            }
+            ;
+            var e = this
+              , h = n;
+            this.id = a;
+            var c = new PIXI.Graphics;
+            h.addChild(c)
+        }
+        , function(n, a) {
+            function e() {
+                o.visible = !1,
+                C[t.id].push(t)
+            }
+            this.play = function() {
+                !function() {
+                    i.setChildIndex(o, i.children.length - 1),
+                    o.visible = !0,
+                    o.x = G / 2,
+                    o.y = A / 2;
+                    var n = L()
+                      , a = Math.min(G, A) * (.25 * Math.random() + .1);
+                    r.clear(),
+                    r.beginFill(n),
+                    r.drawCircle(0, 0, a),
+                    l.play(a, e)
+                }()
+            }
+            ;
+            var t = this
+              , i = n;
+            this.id = a;
+            var o = new PIXI.Container
+              , r = new PIXI.Graphics;
+            i.addChild(o),
+            o.addChild(r);
+            var l = new d(o,r)
+        }
+        , function(n, a) {
+            var u = function(n) {
+                function t() {
+                    TweenLite.to(l.scale, .4, {
+                        x: 0,
+                        y: 0,
+                        ease: Back.easeIn.config(2),
+                        onComplete: a,
+                        delay: .7
+                    }),
+                    TweenLite.to(l, .4, {
+                        rotation: Math.random() * Math.PI * 2,
+                        ease: Back.easeIn.config(2),
+                        delay: .7
+                    })
+                }
+                function a() {
+                    l.visibloe = !1,
+                    i && i()
+                }
+                this.init = function(n, a, e, t) {
+                    _state = 0,
+                    o = e,
+                    r = t,
+                    l.x = n,
+                    l.y = a
+                }
+                ,
+                this.play = function(n, a) {
+                    i = a,
+                    l.clear(),
+                    l.visibloe = !0,
+                    l.beginFill(r),
+                    l.drawRect(.5 * -o, .5 * -o, o, o),
+                    TweenLite.fromTo(l.scale, .3, {
+                        x: 0,
+                        y: 0
+                    }, {
+                        x: 1,
+                        y: 1,
+                        ease: Back.easeOut.config(1.7),
+                        onComplete: t,
+                        delay: n
+                    }),
+                    TweenLite.fromTo(l, .7, {
+                        rotation: Math.random() * Math.PI * 2
+                    }, {
+                        rotation: 0,
+                        ease: Elastic.easeOut.config(1, .3),
+                        delay: n
+                    });
+                    var e = Math.random() * Math.PI;
+                    TweenLite.fromTo(y, 1, {
+                        rotation: 0
+                    }, {
+                        rotation: e,
+                        ease: Bounce.easeOut,
+                        delay: n
+                    })
+                }
+                ;
+                var i, o, r, e = n, l = new PIXI.Graphics;
+                e.addChild(l)
+            };
+            function v() {
+                y.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    p.setChildIndex(y, p.children.length - 1),
+                    y.visible = !0,
+                    y.x = G / 2,
+                    y.y = A / 2;
+                    var n = Math.floor(8 * Math.random() + 6)
+                      , a = Math.min(G, A) * (.25 * Math.random() + .25)
+                      , e = 360 / n
+                      , t = a * (.15 * Math.random() + .05)
+                      , i = L()
+                      , o = Math.PI / 2 * Math.floor(4 * Math.random())
+                      , r = 1;
+                    Math.random() < .5 && (r = -1);
+                    for (var l = 0; l < n; l++) {
+                        var s, d = (r * e * l + o) * Math.PI / 180, h = a * Math.cos(d), c = a * Math.sin(d);
+                        s = w[l] ? w[l] : new u(y),
+                        w[l] = s;
+                        var f = null;
+                        l == n - 1 && (f = v),
+                        s.init(h, c, t, i),
+                        s.play(.05 * l, f)
+                    }
+                }()
+            }
+            ;
+            var e = this
+              , p = n;
+            this.id = a;
+            var y = new PIXI.Container
+              , w = [];
+            p.addChild(y)
+        }
+        , function(n, a) {
+            var u = function(n) {
+                function e() {
+                    var n = .5 * G
+                      , a = l.x + Math.random() * n - n / 2
+                      , e = l.y + Math.random() * n - n / 2;
+                    TweenLite.to(l.scale, .3, {
+                        x: 0,
+                        y: 0,
+                        ease: Power1.easeOut,
+                        onComplete: t,
+                        delay: .5
+                    }),
+                    TweenLite.to(l, .3, {
+                        x: a,
+                        y: e,
+                        ease: Power2.easeOut,
+                        delay: .5
+                    })
+                }
+                function t() {
+                    l.visibloe = !1,
+                    i && i()
+                }
+                this.init = function(n, a, e, t) {
+                    _state = 0,
+                    o = e,
+                    r = t,
+                    l.x = n,
+                    l.y = a
+                }
+                ,
+                this.play = function(n, a) {
+                    i = a,
+                    l.clear(),
+                    l.visibloe = !0,
+                    l.beginFill(r),
+                    l.drawCircle(0, 0, .5 * o),
+                    TweenLite.fromTo(l.scale, .3, {
+                        x: 0,
+                        y: 0
+                    }, {
+                        x: 1,
+                        y: 1,
+                        ease: Back.easeOut.config(1.7),
+                        onComplete: e,
+                        delay: n
+                    })
+                }
+                ;
+                var i, o, r, a = n, l = new PIXI.Graphics;
+                a.addChild(l)
+            };
+            function v() {
+                y.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    p.setChildIndex(y, p.children.length - 1),
+                    y.visible = !0,
+                    y.x = G / 2,
+                    y.y = A / 2;
+                    var n = Math.floor(8 * Math.random() + 6)
+                      , a = Math.min(G, A) * (.2 * Math.random() + .25)
+                      , e = 360 / n
+                      , t = a * (.2 * Math.random() + .05)
+                      , i = L()
+                      , o = Math.PI / 2 * Math.floor(4 * Math.random())
+                      , r = 1;
+                    Math.random() < .5 && (r = -1);
+                    for (var l = 0; l < n; l++) {
+                        var s, d = (r * e * l + o) * Math.PI / 180, h = a * Math.cos(d), c = a * Math.sin(d);
+                        s = w[l] ? w[l] : new u(y),
+                        w[l] = s;
+                        var f = null;
+                        l == n - 1 && (f = v),
+                        s.init(h, c, t, i),
+                        s.play(.05 * l, f)
+                    }
+                }()
+            }
+            ;
+            var e = this
+              , p = n;
+            this.id = a;
+            var y = new PIXI.Container
+              , w = [];
+            p.addChild(y)
+        }
+        , function(n, a) {
+            function i() {
+                r.visible = !1,
+                C[e.id].push(e)
+            }
+            this.play = function() {
+                !function() {
+                    r.visible = !0,
+                    o.setChildIndex(r, o.children.length - 1),
+                    r.x = .2 * G + .6 * G * Math.random(),
+                    r.y = .2 * A + .6 * A * Math.random();
+                    var n, a = Math.min(G, A) * (.7 + .2 * Math.random()), e = a / 10 * (.5 + .8 * Math.random()), t = L();
+                    l.clear(),
+                    l.beginFill(t),
+                    l.drawRect(0, -e / 2, a, e),
+                    s.clear(),
+                    s.beginFill(t),
+                    s.drawRect(-e / 2, 0, e, a),
+                    l.y = 0,
+                    l.x = -a / 2,
+                    s.x = 0,
+                    s.y = -a / 2,
+                    r.rotation = 45 * Math.PI / 180,
+                    l.scale.x = 0,
+                    s.scale.y = 0,
+                    n = Math.random() < .5 ? -135 * Math.PI / 180 : 215 * Math.PI / 180,
+                    (new TimelineLite).to(l.scale, .4, {
+                        x: 1,
+                        ease: Power2.easeOut
+                    }).to(s.scale, .4, {
+                        y: 1,
+                        ease: Power2.easeOut
+                    }, .1).to(r, .6, {
+                        rotation: n,
+                        ease: Back.easeOut.config(1.7)
+                    }, 0).to(l.scale, .3, {
+                        x: 0,
+                        ease: Power2.easeOut
+                    }).to(s.scale, .3, {
+                        y: 0,
+                        ease: Power2.easeOut,
+                        onComplete: i
+                    }, .6)
+                }()
+            }
+            ;
+            var e = this
+              , o = n;
+            this.id = a;
+            var r = new PIXI.Container
+              , l = new PIXI.Graphics
+              , s = new PIXI.Graphics;
+            o.addChild(r),
+            r.addChild(l),
+            r.addChild(s)
+        }
+        , function(n, a) {
+            function o() {
+                if (r < ++c)
+                    switch (l) {
+                    case 0:
+                        l = 1;
+                        var n = h[0];
+                        f.x = n.x,
+                        f.y = n.y,
+                        c = 0,
+                        o();
+                        break;
+                    case 1:
+                        l = 2
+                    }
+                else
+                    TweenLite.to(f, .1, {
+                        x: h[c].x,
+                        y: h[c].y,
+                        onComplete: o,
+                        onUpdate: e,
+                        ease: Power1.easeOut
+                    })
+            }
+            function e() {
+                switch (u.clear(),
+                u.lineStyle(s, d, 1),
+                l) {
+                case 0:
+                    u.moveTo(h[0].x, h[0].y);
+                    for (var n = 1; n < c; n++)
+                        u.lineTo(h[n].x, h[n].y);
+                    u.lineTo(f.x, f.y);
+                    break;
+                case 1:
+                    for (u.moveTo(f.x, f.y),
+                    n = c; n <= r; n++)
+                        u.lineTo(h[n].x, h[n].y)
+                }
+            }
+            this.play = function() {
+                !function() {
+                    u.clear(),
+                    u.visible = !0,
+                    Math.random() < .5 ? (u.x = 0,
+                    u.y = 0,
+                    u.rotation = 0) : (u.x = G,
+                    u.y = A,
+                    u.rotation = Math.PI),
+                    c = l = 0,
+                    r = Math.floor(3 * Math.random()) + 3,
+                    s = 20 * Math.random() + 2,
+                    d = L();
+                    var n, a = Math.random() < .5;
+                    n = a ? G / r : A / r;
+                    for (var e = 0; e <= r; e++) {
+                        var t;
+                        a ? (t = {
+                            x: e * n,
+                            y: A * Math.random()
+                        },
+                        0 == e && (t.x -= 10),
+                        e == r && (t.x += 10)) : (t = {
+                            y: e * n,
+                            x: G * Math.random()
+                        },
+                        0 == e && (t.y -= 10),
+                        e == r && (t.y += 10)),
+                        h[e] = t
+                    }
+                    var i = h[0];
+                    f.x = i.x,
+                    f.y = i.y,
+                    o()
+                }()
+            }
+            ;
+            var t = n;
+            this.id = a;
+            var r, l, s, d, h = [], c = 0, f = {
+                x: 0,
+                y: 0
+            }, u = new PIXI.Graphics;
+            t.addChild(u)
+        }
+        , t], I = [function(n, a) {
+            function d() {
+                y.clear(),
+                y.beginFill(c),
+                y.moveTo(u.pos.b1.x, u.pos.b1.y),
+                y.lineTo(u.pos.b0.x, u.pos.b0.y);
+                for (var n = 0; u.pos["p" + n]; n++) {
+                    var a = u.pos["p" + n];
+                    y.lineTo(a.x, a.y)
+                }
+                y.endFill()
+            }
+            function h() {
+                F == w && T.setColor(c, p - 1),
+                y.visible = !1,
+                C[u.id].push(u)
+            }
+            this.play = function() {
+                !function() {
+                    F = w;
+                    var n = X();
+                    c = P[n],
+                    $("#about").css("background-color", "#" + c.toString(16)),
+                    Math.random() < .3 && T.flash(p),
+                    O = n,
+                    y.clear(),
+                    y.visible = !0,
+                    p = v.children.length - 1 - Math.floor(2 * Math.random()),
+                    v.setChildIndex(y, p);
+                    var a = Math.random() < .5
+                      , e = Math.floor(4 * Math.random()) + 1;
+                    u.pos = {};
+                    var t = 0;
+                    a ? (t = A / e,
+                    u.pos.b0 = {
+                        x: 0,
+                        y: 0
+                    },
+                    u.pos.b1 = {
+                        x: 0,
+                        y: A
+                    }) : (t = G / e,
+                    u.pos.b0 = {
+                        x: 0,
+                        y: 0
+                    },
+                    u.pos.b1 = {
+                        x: G,
+                        y: 0
+                    }),
+                    Math.random() < .5 ? (y.rotation = 0,
+                    y.x = 0,
+                    y.y = 0) : (y.rotation = Math.PI,
+                    y.x = G,
+                    y.y = A);
+                    for (var i = f = 0; i <= e; i++) {
+                        var o = {
+                            x: 0,
+                            y: 0
+                        }
+                          , r = 0;
+                        0 != i && i != e && (r = t / 4 * Math.random() - t / 8),
+                        a ? o.y = t * i + r : o.x = t * i + r,
+                        u.pos["p" + i] = o;
+                        var l, s = .4 * Math.random() + .3;
+                        f = 2,
+                        l = a ? {
+                            x: G
+                        } : {
+                            y: A
+                        },
+                        TweenLite.to(u.pos["p" + i], s, l)
+                    }
+                    u.progress = 0,
+                    TweenLite.to(u, f, {
+                        progress: 1,
+                        ease: Power0.easeNone,
+                        onUpdate: d,
+                        onComplete: h
+                    })
+                }()
+            }
+            ;
+            var c, f, u = this, v = n;
+            this.id = a,
+            this.progress = 0,
+            this.pos = {};
+            var p = 0
+              , y = new PIXI.Graphics;
+            v.addChild(y);
+            var w = Math.floor(aidn.util.getTime())
+        }
+        ];
+        aidn.util.shuffleArray(m);
+        for (var b, x = 16 * Math.random(), C = [], g = 0; g < m.length + I.length; g++)
+            C[g] = [];
+        var T, P = [13430510, 8965324, 9099756, 961181, 1089457, 34969, 13934238, 16110792, 15488645, 16531063, 5853015, 3222317], k = [13430510, 8965324, 9099756, 961181, 1089457, 34969, 13934238, 16110792, 15488645, 16531063, 5853015, 3222317], _ = P.length, O = 0;
+        function L() {
+            var n = Math.random();
+            return n < .03 ? 4473924 : n < .18 ? 16777215 : k[X()]
+        }
+        function X() {
+            for (var n = 0; n < 10; n++) {
+                var a = Math.floor(_ * Math.random());
+                if (2 < Math.abs(O - a))
+                    break
+            }
+            return a
+        }
+        var F = 0
     }
-  };
-  var m;
-  var keys;
-  var currentPage;
-  var s;
-  var args;
-  var t = this;
-  /** @type {number} */
-  var i = -1;
-  /** @type {!Array} */
-  var instances = [];
-  /** @type {number} */
-  this.length = 0;
-  /** @type {number} */
-  this.now = 0;
+    , S = !1, D = 0, U = "off" == aidn.util.getCookie("fb"), T = "off" == aidn.util.getCookie("bt");
+    n(),
+    o(),
+    aidn.util.webaudio ? ($("#ng").css("display", "none"),
+    $(".ok").css("display", "block"),
+    E && $("#scene_main .attention").html("TOUCH &amp; SWIPE!"),
+    y || $("#scene_top .attention").text("* Raise the volume and enjoy!")) : ($("#ng").css("display", "block"),
+    $(".ok").css("display", "none"),
+    y || $("#ng .atten").html("Sorry,<br>your device or browser doesn't support this site.")),
+    PIXI.utils._saidHello = !0,
+    aidn.window.resize(a)
+}
+  , WebAudioManager = function() {
+    function i() {
+        if (a++,
+        h.now = a,
+        s && s(a, o),
+        o <= a)
+            l && l();
+        else {
+            var n = new aidn.WebAudio;
+            n.load(d[r[a]], i),
+            t[a] = n
+        }
+    }
+    this.load = function(n, a, e, t) {
+        l = e,
+        s = t,
+        o = (r = a).length,
+        h.length = o,
+        $.getJSON(n, function(n) {
+            d = n,
+            i()
+        })
+    }
+    ,
+    this.play = function(n, a, e) {
+        0 <= e || (e = 1),
+        n < o && t[n].play(0, !1, null, 0, e, a)
+    }
+    ,
+    this.stop = function(n) {
+        n < o && t[n].stop()
+    }
+    ;
+    var o, r, l, s, d, h = this, a = -1, t = [];
+    this.length = 0,
+    this.now = 0
 };
+
+var mm = new MainManager();
+mm.init();
